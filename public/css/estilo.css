@@ -131,7 +131,7 @@ body {
 /* FOOTER */
 
 .footer {
-  background-color: black;
+  background-color: #800020;
   height: 100px;
   color: #fff;
   display: flex;
@@ -151,7 +151,7 @@ body {
 
 .login {
   height: var(--tamanho-login);
-  background-image: url('../assets/imgs/bannerCadastro.jpg');
+  background-image: url('../assets/fundo.jpg');
   background-size: cover;
 }
 
