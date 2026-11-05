@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>AquaTech | Cadastro</title>
+  <title>Fashion Lux | Cadastro</title>
 
   <script src="./js/sessao.js"></script>
 
@@ -95,7 +95,7 @@
 <script>
 
   // Array para armazenar empresas cadastradas para validação de código de ativação 
-  let listaEmpresasCadastradas = [];
+  // let listaEmpresasCadastradas = [];
 
   function cadastrar() {
     // aguardar();
@@ -106,16 +106,15 @@
     var emailVar = email_input.value;
     var senhaVar = senha_input.value;
     var confirmacaoSenhaVar = confirmacao_senha_input.value;
-    var codigoVar = codigo_input.value;
-    var idEmpresaVincular
+   // var codigoVar = codigo_input.value;
+   // var idEmpresaVincular
 
     // Verificando se há algum campo em branco
     if (
       nomeVar == "" ||
       emailVar == "" ||
       senhaVar == "" ||
-      confirmacaoSenhaVar == "" ||
-      codigoVar == ""
+      confirmacaoSenhaVar == ""
     ) {
       cardErro.style.display = "block";
       mensagem_erro.innerHTML =
@@ -128,17 +127,17 @@
     }
 
     // Verificando se o código de ativação é de alguma empresa cadastrada
-    for (let i = 0; i < listaEmpresasCadastradas.length; i++) {
-      if (listaEmpresasCadastradas[i].codigo_ativacao == codigoVar) {
-        idEmpresaVincular = listaEmpresasCadastradas[i].id
-        console.log("Código de ativação válido.");
-        break;
-      } else {
-        cardErro.style.display = "block";
-        mensagem_erro.innerHTML = "(Mensagem de erro para código inválido)";
-        finalizarAguardar();
-      }
-    }
+    // for (let i = 0; i < listaEmpresasCadastradas.length; i++) {
+      // if (listaEmpresasCadastradas[i]) {
+        // idEmpresaVincular = listaEmpresasCadastradas[i].id
+       // console.log("Código de ativação válido.");
+      //  break;
+      // } else {
+       //  cardErro.style.display = "block";
+       // mensagem_erro.innerHTML = "(Mensagem de erro para código inválido)";
+       // finalizarAguardar();
+     // } 
+   // }
 
     // Enviando o valor da nova input
     fetch("/usuarios/cadastrar", {
@@ -151,8 +150,7 @@
         // Agora vá para o arquivo routes/usuario.js
         nomeServer: nomeVar,
         emailServer: emailVar,
-        senhaServer: senhaVar,
-        idEmpresaVincularServer: idEmpresaVincular
+        senhaServer: senhaVar
       }),
     })
       .then(function (resposta) {
@@ -183,24 +181,24 @@
   }
 
   // Listando empresas cadastradas 
-  function listar() {
-    fetch("/empresas/listar", {
-      method: "GET",
-    })
-      .then(function (resposta) {
-        resposta.json().then((empresas) => {
-          empresas.forEach((empresa) => {
-            listaEmpresasCadastradas.push(empresa);
+  // function listar() {
+   // fetch("/empresas/listar", {
+    //  method: "GET",
+    //})
+     // .then(function (resposta) {
+     //   resposta.json().then((empresas) => {
+      //    empresas.forEach((empresa) => {
+         //   listaEmpresasCadastradas.push(empresa);
 
-            console.log("listaEmpresasCadastradas")
-            console.log(listaEmpresasCadastradas[0].codigo_ativacao)
-          });
-        });
-      })
-      .catch(function (resposta) {
-        console.log(`#ERRO: ${resposta}`);
-      });
-  }
+          //  console.log("listaEmpresasCadastradas")
+          //  console.log(listaEmpresasCadastradas[0].codigo_ativacao)
+       //   });
+      //  });
+      // })
+     // .catch(function (resposta) {
+     //   console.log(`#ERRO: ${resposta}`);
+     // });
+  //}
 
   function sumirMensagem() {
     cardErro.style.display = "none";
