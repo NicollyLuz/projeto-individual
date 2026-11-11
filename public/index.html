@@ -18,13 +18,14 @@
 <body>
     <div class="header">
       <div class="container">
-        <h1 class="titulo">Fashion Lux</h1>
+         <h1 class="titulo">Fashion <span>Lux</span></h1>
         <ul class="navbar">
           <li class="agora">
-            <a href="#">Inicial</a>
+            <a href="#">Tendências
+            </a>
           </li>
           <li>
-            <a href="historia.html">Simulador</a>
+            <a href="editorial.html">Editorial</a>
           </li>
           <li>|</li>
           <li>
@@ -39,11 +40,19 @@
   
     <div class="banner">
       <div class="container">
-        <p>Moda <span> que inspira, </span>estilo que <span>permanece</span>.</p>
+        <!-- ALTERADO: coloquei a frase e o subtítulo dentro de uma div "banner-texto"
+             para o subtítulo ficar embaixo da frase (a frase em si não mudou) -->
+        <div class="banner-texto">
+          <p>Moda <span> que inspira, </span>estilo que <span>permanece</span>.</p>
+
+          <!-- NOVO: subtítulo do banner (pode trocar o texto à vontade) -->
+          <p class="banner-subtitulo">Descubra tendências, conheça a história e mergulhe no universo da moda.</p>
+        </div>
       </div>
     </div>
   
-    <div class="social">
+    <!-- classe "social-fotos" (já adicionada antes): ativa as imagens maiores e centralizadas -->
+    <div class="social social-fotos">
       <div class="container">
         <div class="boxes">
           <div class="box">
@@ -68,7 +77,8 @@
       </div>
     </div>
 
-    <div class="social">
+    <!-- classe "social-fotos" também aqui (2ª seção de fotos) -->
+    <div class="social social-fotos">
       <div class="container">
         <div class="boxes">
           <div class="box">
@@ -93,6 +103,7 @@
       </div>
     </div>
 
+     <!-- 3ª seção (links do rodapé): não mexi, continua igual -->
      <div class="social">
       <div class="container">
         <div class="boxes">

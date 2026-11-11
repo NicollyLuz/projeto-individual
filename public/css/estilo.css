@@ -4,7 +4,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Times New Roman', 'Segoe UI', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: white;
+  background-color: #f8ece8;
+  border-bottom: 1px solid #d9c3bd
 }
 
 :root {
@@ -99,7 +100,8 @@ body {
 /* MISSÃO VISÃO VALORES */
 
 .social {
-  background-color: #e5e5e5;
+  background-color: #f8ece8;
+  border-bottom: 1px solid #d9c3bd;
   display: flex;
 }
 
@@ -369,4 +371,465 @@ input {
   50%  {transform: rotate(25deg)}
   75%  {transform: rotate(-25deg)}
   100% {transform: rotate(25deg)}
+}
+
+
+
+/* =====================================================
+   PÁGINA EDITORIAL (HISTÓRIA DA MODA)
+   Tudo que começa com "hist-" ou "pagina-historia" só vale no editorial.html,
+   então o index.html continua igual.
+   ===================================================== */
+
+/* Deixa o fundo da página inteira rosado, igual ao da imagem */
+body.pagina-historia {
+  background-color: #f8ece8;
+}
+
+/* Header com o mesmo fundo rosado e uma linha mais fina embaixo */
+.pagina-historia .header {
+  background-color: #f8ece8;
+  border-bottom: 1px solid #d9c3bd;
+}
+
+/* Deixa a palavra "Lux" do título na cor vinho */
+.pagina-historia .titulo span {
+  color: #a5384f;
+}
+
+/* Coloca um sublinhado no item do menu da página atual (Editorial) */
+.pagina-historia .agora {
+  border-bottom: 1px solid black;
+}
+
+/* ---------- HERO: faixa escura com o título ---------- */
+
+/* Define a altura da faixa e a foto de fundo.
+   O linear-gradient escurece a esquerda da foto para o texto branco aparecer.
+   Para trocar a foto, mude o caminho dentro do url() */
+.hist-hero {
+  height: 260px;
+  color: white;
+  background-image: linear-gradient(90deg, #3b2a29 35%, rgba(59, 42, 41, 0.4) 100%),
+    url('../assets/imgs/vestido.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+/* Coloca o texto do hero um embaixo do outro e centralizado na vertical */
+.hist-hero .container {
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+/* Título "História da Moda" grande e em itálico */
+.hist-hero h2 {
+  margin: 0;
+  font-size: 55px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+/* Subtítulo do hero */
+.hist-hero p {
+  margin: 15px 0 0 0;
+  font-size: 20px;
+  font-style: italic;
+}
+
+/* ---------- SEÇÃO "Da antiguidade às passarelas" ---------- */
+
+/* Espaço em cima e embaixo da seção */
+.hist-secao {
+  padding: 40px 0;
+}
+
+/* Põe foto e texto lado a lado, com espaço entre eles */
+.hist-secao .container {
+  gap: 40px;
+  align-items: center;
+}
+
+/* Tamanho da foto. O object-fit: cover corta a foto sem deformar */
+.hist-secao img {
+  width: 310px;
+  height: 225px;
+  object-fit: cover;
+  border: 1px solid #d9c3bd;
+}
+
+/* Textinho vinho que fica acima dos títulos ("Um breve percurso", "Grandes marcos") */
+.hist-rotulo {
+  color: #a5384f;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Títulos das seções */
+.hist-secao h3 {
+  font-size: 34px;
+  font-weight: 400;
+  margin: 5px 0 15px 0;
+  line-height: 1.1;
+}
+
+/* Parágrafos das seções */
+.hist-secao p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 0 8px 0;
+}
+
+/* ---------- SEÇÃO "Ícones que marcaram a história" ---------- */
+
+/* Texto de um lado e fotos do outro */
+.hist-icones .container {
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Largura da coluna de texto */
+.hist-icones .texto {
+  width: 40%;
+}
+
+/* Botão "Conheça mais": fundo transparente e borda preta */
+.hist-botao {
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid black;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  margin-top: 10px;
+}
+
+/* Quando passa o mouse, o botão fica vinho */
+.hist-botao:hover {
+  background-color: #800020;
+  border-color: #800020;
+  color: white;
+}
+
+/* Texto extra que começa ESCONDIDO (display: none).
+   O JavaScript mostra ele quando clica no botão */
+#div_mensagem {
+  margin-top: 15px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Container das fotos estilo polaroid */
+.hist-polaroids {
+  display: flex;
+  align-items: center;
+}
+
+/* Cada foto vira uma polaroid: borda branca grossa (mais grossa embaixo) e sombra.
+   O margin-left negativo faz as fotos se sobreporem um pouco */
+.hist-polaroids img {
+  width: 130px;
+  height: 170px;
+  object-fit: cover;
+  background-color: white;
+  border: none;
+  padding: 8px 8px 25px 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+  margin-left: -15px;
+}
+
+/* Inclina cada foto para um lado (rotate) para ficar com cara de foto jogada */
+.hist-polaroids img:nth-child(1) {
+  transform: rotate(-6deg);
+}
+
+/* A foto do meio é inclinada e sobe um pouco */
+.hist-polaroids img:nth-child(2) {
+  transform: rotate(2deg);
+  margin-top: -30px;
+}
+
+.hist-polaroids img:nth-child(3) {
+  transform: rotate(6deg);
+}
+
+/* Coração vinho ao lado das fotos */
+.hist-coracao {
+  color: #800020;
+  font-size: 45px;
+  margin-left: 20px;
+}
+
+/* ---------- FAIXA VINHO COM A FRASE FINAL ---------- */
+
+/* Fundo vinho com texto branco, separado da seção de cima */
+.hist-frase {
+  background-color: #5c0f1e;
+  color: white;
+  height: 120px;
+  margin-top: 40px;
+}
+
+/* Textos um embaixo do outro, centralizados na vertical */
+.hist-frase .container {
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+/* Frase principal em itálico */
+.hist-frase h3 {
+  margin: 0;
+  font-size: 30px;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Frase pequena embaixo */
+.hist-frase p {
+  margin: 8px 0 0 0;
+  font-size: 13px;
+}
+
+/* ---------- CELULAR (telas com até 800px) ---------- */
+
+/* Em telas pequenas, coloca tudo um embaixo do outro e ajusta tamanhos */
+@media (max-width: 800px) {
+  .hist-secao .container,
+  .hist-icones .container {
+    flex-direction: column;
+  }
+
+  .hist-icones .texto {
+    width: 100%;
+  }
+
+  .hist-secao img {
+    width: 100%;
+  }
+
+  .hist-hero h2 {
+    font-size: 40px;
+  }
+}
+
+
+
+
+/* =====================================================
+   EDITORIAL: SEÇÕES NOVAS (linha do tempo, você sabia, galeria)
+   ===================================================== */
+
+/* Espaço em cima e embaixo de cada faixa nova */
+.hist-faixa {
+  padding: 50px 0;
+}
+
+/* Fundo um pouco mais claro com linhas finas, para separar as faixas */
+.hist-faixa-clara {
+  background-color: #fdf5f2;
+  border-top: 1px solid #d9c3bd;
+  border-bottom: 1px solid #d9c3bd;
+}
+
+/* Faz o container empilhar os elementos um embaixo do outro (título em cima, cards embaixo) */
+.hist-coluna {
+  flex-direction: column;
+}
+
+/* Título centralizado das faixas novas */
+.hist-titulo-centro {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 400;
+  margin: 5px 0 30px 0;
+}
+
+/* Grade com 3 colunas (linha do tempo) */
+.hist-grade {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* Grade com 4 colunas (galeria). Fica depois da .hist-grade para esta valer */
+.hist-grade-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Caixinha de cada item da grade: borda fina e fundo claro */
+.hist-item {
+  border: 1px solid #d9c3bd;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 20px;
+}
+
+/* Título de cada card */
+.hist-item h4 {
+  font-size: 22px;
+  font-weight: 400;
+  margin: 5px 0 10px 0;
+  line-height: 1.2;
+}
+
+/* Texto de cada card */
+.hist-item p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Mantém o rótulo pequeno (13px) dentro dos cards, senão o texto acima deixaria ele em 15px */
+.hist-item .hist-rotulo {
+  font-size: 13px;
+}
+
+/* Foto dos cards e da galeria. O object-fit: cover corta sem deformar */
+.hist-foto {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border: 1px solid #d9c3bd;
+  margin-bottom: 15px;
+}
+
+/* Área onde a curiosidade aparece ("Você sabia?"), ao lado da foto */
+.hist-secao #div_curiosidade {
+  width: 100%;
+  margin: 15px 0 0 0;
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* ---------- Telas menores (editorial) ---------- */
+
+/* Em tablets, a galeria de 4 colunas vira 2 */
+@media (max-width: 1100px) {
+  .hist-grade-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* No celular, tudo vira 1 coluna */
+@media (max-width: 800px) {
+  .hist-grade,
+  .hist-grade-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =====================================================
+   PÁGINA INICIAL (INDEX): SUBTÍTULO NO BANNER + FOTOS MAIORES E CENTRALIZADAS
+   ===================================================== */
+
+/* ---------- BANNER: subtítulo ---------- */
+
+/* Caixa que junta a frase principal e o subtítulo.
+   Tem 50% de largura, igual à largura que a frase tinha antes */
+.banner .banner-texto {
+  width: 50%;
+}
+
+/* A frase principal continua com o mesmo tamanho, mas agora ocupa 100% da caixa acima */
+.banner .container .banner-texto p {
+  width: 100%;
+}
+
+/* Estilo do subtítulo (menor, mais fino e com espaço acima) */
+.banner .container .banner-texto .banner-subtitulo {
+  font-size: 22px;
+  font-weight: 400;
+  margin-top: 20px;
+  line-height: 1.5;
+}
+
+/* ---------- FOTOS: centralizadas (só nas seções com a classe "social-fotos") ---------- */
+
+/* Centraliza o grupo de caixas na tela, com espaço entre elas */
+.social-fotos .container .boxes {
+  justify-content: center;
+  gap: 40px;
+  padding: 50px 0;
+}
+
+/* regra da imagem da torre */
+.social-fotos .box img[src*="paris"] {
+  object-position: center 70%;
+}
+
+/* Cada caixa tem no máximo 400px de largura e centraliza o conteúdo.
+   Se a tela for menor, as caixas encolhem sozinhas */
+.social-fotos .box {
+  flex: 0 1 400px;
+  align-items: center;
+  text-align: center;
+}
+
+/* Imagem com 250px de altura, ocupando a largura da caixa.
+   ALTERADO: voltei o object-fit: cover -> ele corta a foto para caber no tamanho SEM achatar.
+   ALTERADO: object-position: center top -> o corte tira mais de baixo e preserva o topo (rostos) */
+.social-fotos .box img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+/* Textos centralizados */
+.social-fotos .box span {
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ---------- Celular (index) ---------- */
+@media (max-width: 800px) {
+  /* banner: o texto ocupa a tela toda */
+  .banner .banner-texto {
+    width: 100%;
+  }
+
+  /* caixas uma embaixo da outra */
+  .social-fotos .container .boxes {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .social-fotos .box {
+    flex: none;
+    width: 100%;
+  }
+
+  .social-fotos .box img {
+    height: 320px;
+  }
+}
+
+/* =====================================================
+   INDEX: DETALHES EM VINHO (igual ao editorial)
+   ===================================================== */
+
+/* NOVO: a palavra "Lux" do título fica vinho (mesma cor do editorial).
+   Vale para o título de qualquer página que use o <span> dentro do .titulo */
+.titulo span {
+  color: #a5384f;
+}
+
+/* NOVO: os títulos pequenos das fotos (Editorial, Street style, Acessórios, Passarela, Beleza, Cultura)
+   ficam vinho, em maiúsculas e com letras mais espaçadas, igual aos rótulos do editorial.
+   Os títulos grandes (h3) continuam pretos */
+.social-fotos .box h4 {
+  color: #a5384f;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }

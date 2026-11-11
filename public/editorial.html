@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fashion Lux | Editorial</title>
+
+    <script src="./js/sessao.js"></script>
+
+    <link rel="stylesheet" href="./css/estilo.css">
+    <link rel="icon" href="./assets/icon/favicon2.ico">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+</head>
+
+<!-- ALTERADO: classe "pagina-historia" no body para o estilo valer só nesta página -->
+<body class="pagina-historia">
+
+    <!--header inicio-->
+    <div class="header">
+        <div class="container">
+            <!-- ALTERADO: "Lux" dentro de um span para ficar na cor vinho -->
+            <h1 class="titulo">Fashion <span>Lux</span></h1>
+            <ul class="navbar">
+                <li>
+                    <a href="./index.html">Tendências</a>
+                </li>
+                <li class="agora">Editorial</li>
+                <li>|</li>
+                <li>
+                    <a href="./login.html">Login</a>
+                </li>
+                <li>
+                    <a href="./login.html">Cadastro</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <!-- ALTERADO: o antigo "simulador" virou a página "História da Moda" -->
+    <div class="editorial">
+
+        <!-- NOVO: faixa escura com título e subtítulo (hero) -->
+        <div class="hist-hero">
+            <div class="container">
+                <h2>História<br>da Moda</h2>
+                <p>Uma jornada através do tempo,<br>estilo e cultura.</p>
+            </div>
+        </div>
+
+        <!-- NOVO: seção "Da antiguidade às passarelas" -->
+        <div class="hist-secao">
+            <div class="container">
+                <!-- troque o src por uma foto sua -->
+                <img src="assets/imgs/ruas.jpg" alt="Retrato em preto e branco">
+                <div>
+                    <p class="hist-rotulo">Um breve percurso</p>
+                    <h3>Da antiguidade<br>às passarelas</h3>
+                    <p>A moda sempre foi mais do que roupa.</p>
+                    <p>Ela é expressão, cultura, arte e poder.</p>
+                    <p>Desde os trajes da antiguidade até os desfiles contemporâneos, a moda reflete os costumes e
+                        transforma o mundo.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- NOVO: seção "Ícones que marcaram a história" -->
+        <div class="hist-icones">
+            <div class="container">
+                <div class="texto">
+                    <p class="hist-rotulo">Grandes marcos</p>
+                    <h3>Ícones que<br>marcaram a história</h3>
+                    <p>De Coco Chanel a Alexander McQueen, grandes nomes revolucionaram o jeito de se vestir e
+                        deixaram um legado eterno na indústria da moda.</p>
+
+                    <!-- NOVO: botão que chama a função mostrarMais() quando clica -->
+                    <button class="hist-botao" onclick="mostrarMais()">Conheça mais</button>
+
+                    <!-- NOVO: div vazia onde o JavaScript escreve a mensagem -->
+                    <div id="div_mensagem"></div>
+                </div>
+
+                <!-- NOVO: três fotos estilo polaroid + coração (troque os src pelas suas fotos) -->
+                <div class="hist-polaroids">
+                    <img src="assets/imgs/paris.jpg" alt="Ícone da moda 1">
+                    <img src="assets/imgs/vestido2.jpg" alt="Ícone da moda 2">
+                    <img src="assets/imgs/laço.jpg" alt="Ícone da moda 3">
+                    <span class="hist-coracao">&#9825;</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- NOVO: faixa vinho com a frase final -->
+        <div class="hist-frase">
+            <div class="container">
+                <h3>A moda é história,<br>mas também é futuro.</h3>
+                <p>E continua se reinventando, sempre.</p>
+            </div>
+        </div>
+
+    </div>
+    <!-- fim da página editorial -->
+
+    <!--footer inicio-->
+    <div class="footer">
+        <div class="container">
+            <h4>Feito com amor por aluno &hearts; SPTech &copy; 2023-2026</h4>
+        </div>
+    </div>
+    <!--footer fim-->
+
+    <!-- NOVO: JavaScript básico -->
+    <script>
+        // FUNÇÃO mostrarMais(): roda quando clica no botão "Conheça mais"
+        function mostrarMais() {
+            // guarda o texto numa variável (let)
+            let mensagem = "Cada década trouxe uma ruptura: os anos 20 libertaram o corpo, os anos 50 celebraram a elegância e os anos 90 abraçaram o minimalismo.";
+
+            // escreve o texto dentro da div_mensagem
+            div_mensagem.innerHTML = mensagem;
+        }
+    </script>
+
+</body>
+
+</html>
