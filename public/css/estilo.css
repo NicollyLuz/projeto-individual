@@ -24,7 +24,7 @@ body {
 
 .header {
   height: var(--tamanho-header);
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid beige;
 }
 
 .header .container {
@@ -35,7 +35,7 @@ body {
 
 .header a {
   text-decoration: none;
-  color: black;
+  color: #800020;
 }
 
 .agora {
@@ -48,7 +48,7 @@ body {
   align-items: center;
   justify-content: space-between;
   list-style: none;
-  color: black;
+  color: #800020
 }
 
 .titulo {
@@ -411,7 +411,7 @@ body.pagina-historia {
   height: 260px;
   color: white;
   background-image: linear-gradient(90deg, #3b2a29 35%, rgba(59, 42, 41, 0.4) 100%),
-    url('../assets/imgs/vestido.jpg');
+    url('../assets/historia-da-moda-sem-texto-fundo-claro.png');
   background-size: cover;
   background-position: center;
 }
@@ -599,115 +599,6 @@ body.pagina-historia {
 
 /* ---------- CELULAR (telas com até 800px) ---------- */
 
-/* Em telas pequenas, coloca tudo um embaixo do outro e ajusta tamanhos */
-@media (max-width: 800px) {
-  .hist-secao .container,
-  .hist-icones .container {
-    flex-direction: column;
-  }
-
-  .hist-icones .texto {
-    width: 100%;
-  }
-
-  .hist-secao img {
-    width: 100%;
-  }
-
-  .hist-hero h2 {
-    font-size: 40px;
-  }
-}
-
-
-
-
-/* =====================================================
-   EDITORIAL: SEÇÕES NOVAS (linha do tempo, você sabia, galeria)
-   ===================================================== */
-
-/* Espaço em cima e embaixo de cada faixa nova */
-.hist-faixa {
-  padding: 50px 0;
-}
-
-/* Fundo um pouco mais claro com linhas finas, para separar as faixas */
-.hist-faixa-clara {
-  background-color: #fdf5f2;
-  border-top: 1px solid #d9c3bd;
-  border-bottom: 1px solid #d9c3bd;
-}
-
-/* Faz o container empilhar os elementos um embaixo do outro (título em cima, cards embaixo) */
-.hist-coluna {
-  flex-direction: column;
-}
-
-/* Título centralizado das faixas novas */
-.hist-titulo-centro {
-  text-align: center;
-  font-size: 34px;
-  font-weight: 400;
-  margin: 5px 0 30px 0;
-}
-
-/* Grade com 3 colunas (linha do tempo) */
-.hist-grade {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-/* Grade com 4 colunas (galeria). Fica depois da .hist-grade para esta valer */
-.hist-grade-4 {
-  grid-template-columns: repeat(4, 1fr);
-}
-
-/* Caixinha de cada item da grade: borda fina e fundo claro */
-.hist-item {
-  border: 1px solid #d9c3bd;
-  background-color: rgba(255, 255, 255, 0.5);
-  padding: 20px;
-}
-
-/* Título de cada card */
-.hist-item h4 {
-  font-size: 22px;
-  font-weight: 400;
-  margin: 5px 0 10px 0;
-  line-height: 1.2;
-}
-
-/* Texto de cada card */
-.hist-item p {
-  font-size: 15px;
-  line-height: 1.6;
-  margin: 0;
-}
-
-/* Mantém o rótulo pequeno (13px) dentro dos cards, senão o texto acima deixaria ele em 15px */
-.hist-item .hist-rotulo {
-  font-size: 13px;
-}
-
-/* Foto dos cards e da galeria. O object-fit: cover corta sem deformar */
-.hist-foto {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border: 1px solid #d9c3bd;
-  margin-bottom: 15px;
-}
-
-/* Área onde a curiosidade aparece ("Você sabia?"), ao lado da foto */
-.hist-secao #div_curiosidade {
-  width: 100%;
-  margin: 15px 0 0 0;
-  font-size: 16px;
-  font-style: italic;
-  line-height: 1.6;
-}
-
 /* ---------- Telas menores (editorial) ---------- */
 
 /* Em tablets, a galeria de 4 colunas vira 2 */
@@ -725,12 +616,6 @@ body.pagina-historia {
   }
 }
 
-
-/* =====================================================
-   PÁGINA INICIAL (INDEX): SUBTÍTULO NO BANNER + FOTOS MAIORES E CENTRALIZADAS
-   ===================================================== */
-
-/* ---------- BANNER: subtítulo ---------- */
 
 /* Caixa que junta a frase principal e o subtítulo.
    Tem 50% de largura, igual à largura que a frase tinha antes */
@@ -789,29 +674,6 @@ body.pagina-historia {
 .social-fotos .box span {
   text-align: center;
   line-height: 1.5;
-}
-
-/* ---------- Celular (index) ---------- */
-@media (max-width: 800px) {
-  /* banner: o texto ocupa a tela toda */
-  .banner .banner-texto {
-    width: 100%;
-  }
-
-  /* caixas uma embaixo da outra */
-  .social-fotos .container .boxes {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .social-fotos .box {
-    flex: none;
-    width: 100%;
-  }
-
-  .social-fotos .box img {
-    height: 320px;
-  }
 }
 
 /* =====================================================

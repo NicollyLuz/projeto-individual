@@ -2,8 +2,8 @@
 /* The 4-point grid system: https://medium.com/@sainzkike/controlling-spacing-in-design-systems-multiple-spacing-9bf1afec87f */
 
 :root {
-    --primary-brand-color: #ED145B;
-    --secondary-brand-color: #0762C8;
+    --primary-brand-color: #5c1324; /* Vinho */
+    --secondary-brand-color: #a63d55; /* Rosa Escuro */
     --success: #198754;
     --success-dark: #095c36;
     --success-light: #9dd3ba;
@@ -15,60 +15,40 @@
     --danger-light: #f0c1c6;
     --new-gray: #CCCCCC;
     --new-black: #212427;
-    --new-white: #E8E8E8;
+    --new-white: #fcf5f5; /* Fundo rosa claro */
 }
 
 body {
     color: var(--new-black);
     background-color: var(--new-white);
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
 }
 
 button {
     font-family: monospace;
     font-weight: bold;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 10px;
 }
 
-.flex-colunar {
-    display: flex;
-    flex-direction: column;
-}
+.flex-colunar { display: flex; flex-direction: column; }
+.width-fit-content { width: fit-content; }
+.border-primary { border: 3px solid var(--primary-brand-color); padding: 15px; border-radius: 8px; margin-top: 20px; }
+.border-secondary { border: 3px solid var(--secondary-brand-color); padding: 15px; border-radius: 8px; margin-top: 20px; background: white;}
+.padding-8 { padding: 8px; }
+.text-bold { font-weight: bold; font-size: 1.2rem; }
 
-.width-fit-content {
-    width: fit-content;
-}
+.text-success-with-bg { color: var(--success-dark); background-color: var(--success-light); padding: 5px; border-radius: 4px; }
+.text-warning-with-bg { color: var(--warning-dark); background-color: var(--warning-light); padding: 5px; border-radius: 4px; }
+.text-danger-with-bg { color: var(--danger-dark); background-color: var(--danger-light); padding: 5px; border-radius: 4px; }
+.text-new-gray { color: var(--new-gray); }
 
-.border-primary {
-    border: 3px solid var(--primary-brand-color);
-}
-
-.border-secondary {
-    border: 3px solid var(--secondary-brand-color);
-}
-
-.padding-8 {
-    padding: 8px;
-}
-
-.text-bold {
-    font-weight: bold;
-}
-
-.text-success-with-bg {
-    color: var(--success-dark);
-    background-color: var(--success-light);
-}
-
-.text-warning-with-bg {
-    color: var(--warning-dark);
-    background-color: var(--warning-light);
-}
-
-.text-danger-with-bg {
-    color: var(--danger-dark);
-    background-color: var(--danger-light);
-}
-
-.text-new-gray {
-    color: var(--new-gray);
-}
+/* Esconde os inputs de rádio padrão para ficar mais bonito */
+.radio { margin-right: 10px; }
+.option { cursor: pointer; }

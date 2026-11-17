@@ -18,28 +18,18 @@
 <body>
 
     <!--Header-->
-
     <div class="header">
         <div class="container">
             <h1 class="titulo">Fashion Lux</h1>
             <ul class="navbar">
-                <li>
-                    <a href="index.html">Tendências</a>
-                </li>
-                <li>
-                    <a href="editorial.html">Editorial</a>
-                </li>
+                <li><a href="index.html">Tendências</a></li>
+                <li><a href="editorial.html">Editorial</a></li>
                 <li>|</li>
-                <li class="agora">
-                    <a href="#">Login</a>
-                </li>
-                <li>
-                    <a href="cadastro.html">Cadastro</a>
-                </li>
+                <li class="agora"><a href="#">Login</a></li>
+                <li><a href="cadastro.html">Cadastro</a></li>
             </ul>
         </div>
     </div>
-
 
     <div class="login">
         <div class="alerta_erro">
@@ -80,32 +70,28 @@
     <!--footer fim-->
 
 </body>
-
 </html>
 
 <script>
-
-
     function entrar() {
-        aguardar();
+        // Se você tiver a função aguardar() no sessao.js, descomente a linha abaixo
+        // aguardar(); 
 
         var emailVar = email_input.value;
         var senhaVar = senha_input.value;
 
         if (emailVar == "" || senhaVar == "") {
             cardErro.style.display = "block"
-            mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
-            finalizarAguardar();
+            mensagem_erro.innerHTML = "Por favor, preencha todos os campos!";
             return false;
-        }
-        else {
+        } else {
             setInterval(sumirMensagem, 5000)
         }
 
-        console.log("FORM LOGIN: ", emailVar);
-        console.log("FORM SENHA: ", senhaVar);
+        console.log("Tentando login com:", emailVar);
 
-        fetch("/usuarios/autenticar", {
+        // CORREÇÃO AQUI: Rota no singular (/usuario/autenticar)
+        fetch("http://localhost:3000/usuario/autenticar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -115,36 +101,31 @@
                 senhaServer: senhaVar
             })
         }).then(function (resposta) {
-            console.log("ESTOU NO THEN DO entrar()!")
-
             if (resposta.ok) {
-                console.log(resposta);
-
                 resposta.json().then(json => {
-                    console.log(json);
-                    console.log(JSON.stringify(json));
+                    console.log("Usuário autenticado:", json);
+
+                    // Salva os dados na sessão do navegador
                     sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.NOME_USUARIO = json.nome;
                     sessionStorage.ID_USUARIO = json.id;
 
                     setTimeout(function () {
-                        window.location = "./dashboard/cards.html";
-                    }, 1000); // apenas para exibir o loading
-
+                        window.location = "dashboard.html"; 
+                    }, 1000); 
                 });
-
             } else {
-
-                console.log("Houve um erro ao tentar realizar o login!");
-
                 resposta.text().then(texto => {
                     console.error(texto);
-                    finalizarAguardar(texto);
+                    cardErro.style.display = "block";
+                    mensagem_erro.innerHTML = "E-mail ou senha incorretos.";
+                    // finalizarAguardar(texto);
                 });
             }
-
         }).catch(function (erro) {
-            console.log(erro);
+            console.log("Erro de conexão:", erro);
+            cardErro.style.display = "block";
+            mensagem_erro.innerHTML = "Erro ao conectar com o servidor. Ele está rodando?";
         })
 
         return false;
@@ -153,5 +134,4 @@
     function sumirMensagem() {
         cardErro.style.display = "none"
     }
-
 </script>

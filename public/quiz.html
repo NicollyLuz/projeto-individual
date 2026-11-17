@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Fashion Lux</title>
+    
+    <style>
+        /* ==========================================
+           VARIÁVEIS DE CORES
+           ========================================== */
+        :root {
+            --vinho: #5c1324;
+            --rosa-escuro: #a63d55;
+            --rosa-claro: #fcf5f5;
+            --texto-escuro: #212427;
+            --verde-fundo: #9dd3ba;
+            --verde-borda: #095c36;
+            --vermelho-fundo: #f0c1c6;
+            --vermelho-borda: #990c19;
+        }
+
+        body {
+            background-color: var(--vinho);
+            color: var(--texto-escuro);
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .quiz-container {
+            background-color: var(--rosa-claro);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        h1 {
+            color: var(--vinho);
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 20px;
+        }
+
+        .flex-colunar { display: flex; flex-direction: column; gap: 10px; }
+        .padding-8 { padding: 8px; }
+        .text-bold { font-weight: bold; font-size: 1.2rem; color: var(--vinho); }
+
+        /* ==========================================
+           ESTILO DOS BOTÕES
+           ========================================== */
+        button {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-principal {
+            background-color: var(--vinho);
+            color: white;
+        }
+        .btn-principal:hover { background-color: var(--rosa-escuro); }
+        .btn-principal:disabled { background-color: #ccc; cursor: not-allowed; }
+
+        /* ==========================================
+           ESTILO DAS ALTERNATIVAS
+           ========================================== */
+        .opcao-container {
+            background: white;
+            padding: 12px;
+            border-radius: 5px;
+            border: 2px solid #ddd; /* Borda padrão cinza */
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .radio { margin-right: 10px; cursor: pointer; }
+        .option { cursor: pointer; font-size: 1rem; }
+
+        /* ==========================================
+           CORES DE ACERTO E ERRO (Aplicadas via JS)
+           ========================================== */
+        /* O !important garante que a cor mude mesmo se tiver outra regra CSS */
+        .text-success-with-bg { 
+            background-color: var(--verde-fundo) !important; 
+            border-color: var(--verde-borda) !important;
+        }
+        .text-danger-with-bg { 
+            background-color: var(--vermelho-fundo) !important; 
+            border-color: var(--vermelho-borda) !important;
+        }
+        
+        #jogo { display: none; }
+        #pontuacaoFinalJogo { display: none; text-align: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <h1>Descubra seu Estilo</h1>
+
+        <div id="jogo" class="flex-colunar">
+            <div class="padding-8">
+                <span>Questão <span id="spanNumeroDaQuestaoAtual"></span> de <span id="qtdQuestoes"></span></span>
+            </div>
+            
+            <div class="padding-8">
+                <span id="spanQuestaoExibida" class="text-bold"></span>
+            </div>
+
+            <!-- ALTERAÇÃO AQUI: O ID agora fica na tag <label> para o JS conseguir achar e pintar -->
+            <div class="flex-colunar padding-8">
+                <label class="opcao-container" id="labelOpcaoUm">
+                    <input type="radio" id="primeiraOpcao" name="option" class="radio" value="alternativaA" />
+                    <span class="option" id="textoOpcaoUm"></span>
+                </label>
+                <label class="opcao-container" id="labelOpcaoDois">
+                    <input type="radio" id="segundaOpcao" name="option" class="radio" value="alternativaB" />
+                    <span class="option" id="textoOpcaoDois"></span>
+                </label>
+                <label class="opcao-container" id="labelOpcaoTres">
+                    <input type="radio" id="terceiraOpcao" name="option" class="radio" value="alternativaC" />
+                    <span class="option" id="textoOpcaoTres"></span>
+                </label>
+                <label class="opcao-container" id="labelOpcaoQuatro">
+                    <input type="radio" id="quartaOpcao" name="option" class="radio" value="alternativaD" />
+                    <span class="option" id="textoOpcaoQuatro"></span>
+                </label>
+            </div>
+
+            <div class="flex-colunar padding-8">
+                <button onclick="submeter()" id="btnSubmeter" class="btn-principal">Submeter resposta</button>
+                <button onclick="avancar()" id="btnProx" class="btn-principal" disabled>Avançar</button>
+            </div>
+        </div>
+
+        <div id="pontuacaoFinalJogo">
+            <h2 style="color: var(--vinho);">Resultado</h2>
+            <p id="msgFinal" style="font-size: 1.2rem; margin: 20px 0;"></p>
+            <button onclick="tentarNovamente()" class="btn-principal">Tentar novamente</button>
+            <br><br>
+            <a href="dashboard.html" style="color: var(--vinho); font-weight: bold;">Ir para a Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        const listaDeQuestoes = [
+            { pergunta: "Qual estilo prioriza peças atemporais e alfaiataria?", alternativaA: "Street", alternativaB: "Clássico", alternativaC: "Minimalista", alternativaD: "Esportivo", alternativaCorreta: "alternativaB" },
+            { pergunta: "Qual estilo é marcado por roupas largas e cultura urbana?", alternativaA: "Elegante", alternativaB: "Minimalista", alternativaC: "Street", alternativaD: "Clássico", alternativaCorreta: "alternativaC" },
+            { pergunta: "Qual estilo foca no 'menos é mais' e cores neutras?", alternativaA: "Minimalista", alternativaB: "Esportivo", alternativaC: "Street", alternativaD: "Elegante", alternativaCorreta: "alternativaA" },
+            { pergunta: "Qual estilo une conforto e tecidos tecnológicos?", alternativaA: "Clássico", alternativaB: "Elegante", alternativaC: "Minimalista", alternativaD: "Esportivo", alternativaCorreta: "alternativaD" },
+            { pergunta: "Qual estilo valoriza sofisticação e tecidos nobres?", alternativaA: "Street", alternativaB: "Esportivo", alternativaC: "Elegante", alternativaD: "Clássico", alternativaCorreta: "alternativaC" }
+        ];
+
+        let numeroDaQuestaoAtual = 0;
+        let pontuacaoFinal = 0;
+        let quantidadeDeQuestoes = listaDeQuestoes.length;
+
+        window.onload = function() {
+            document.getElementById('jogo').style.display = "flex";
+            document.getElementById('qtdQuestoes').innerHTML = quantidadeDeQuestoes;
+            preencherHTMLcomQuestaoAtual(0);
+            btnSubmeter.disabled = false;
+            btnProx.disabled = true;
+        };
+
+        function preencherHTMLcomQuestaoAtual(index) {
+            habilitarAlternativas(true);
+            const questaoAtual = listaDeQuestoes[index];
+            numeroDaQuestaoAtual = index; // Salva a questão atual (0, 1, 2...)
+            
+            document.getElementById("spanNumeroDaQuestaoAtual").innerHTML = index + 1;
+            document.getElementById("spanQuestaoExibida").innerHTML = questaoAtual.pergunta;
+            
+            // Injeta o texto nos spans corretos
+            document.getElementById("textoOpcaoUm").innerHTML = questaoAtual.alternativaA;
+            document.getElementById("textoOpcaoDois").innerHTML = questaoAtual.alternativaB;
+            document.getElementById("textoOpcaoTres").innerHTML = questaoAtual.alternativaC;
+            document.getElementById("textoOpcaoQuatro").innerHTML = questaoAtual.alternativaD;
+        }
+
+        function submeter() {
+            const options = document.getElementsByName("option");
+            let hasChecked = false;
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].checked) { hasChecked = true; break; }
+            }
+
+            if (!hasChecked) {
+                alert("Escolha uma opção antes de submeter.");
+            } else {
+                btnSubmeter.disabled = true;
+                btnProx.disabled = false;
+                habilitarAlternativas(false); // Bloqueia os radios
+                checarResposta(); // Pinta de verde/vermelho
+            }
+        }
+
+        function habilitarAlternativas(trueOrFalse) {
+            let opcaoEscolhida = trueOrFalse ? false : true;
+            primeiraOpcao.disabled = opcaoEscolhida;
+            segundaOpcao.disabled = opcaoEscolhida;
+            terceiraOpcao.disabled = opcaoEscolhida;
+            quartaOpcao.disabled = opcaoEscolhida;
+        }
+
+        function checarResposta() {
+            const questaoAtual = listaDeQuestoes[numeroDaQuestaoAtual];
+            const respostaQuestaoAtual = questaoAtual.alternativaCorreta;
+            const options = document.getElementsByName("option");
+            let alternativaCorreta = null;
+
+            // 1. Descobre qual é o ID da label correta (ex: "labelOpcaoDois")
+            options.forEach((option) => {
+                if (option.value === respostaQuestaoAtual) {
+                    alternativaCorreta = option.labels[0].id;
+                }
+            });
+
+            // 2. Pinta as opções
+            options.forEach((option) => {
+                if (option.checked === true && option.value === respostaQuestaoAtual) {
+                    // Acertou: Pinta de verde e soma ponto
+                    document.getElementById(alternativaCorreta).classList.add("text-success-with-bg");
+                    pontuacaoFinal++;
+                } else if (option.checked && option.value !== respostaQuestaoAtual) {
+                    // Errou: Pinta a escolhida de vermelho e a correta de verde
+                    const wrongLabelId = option.labels[0].id;
+                    document.getElementById(wrongLabelId).classList.add("text-danger-with-bg");
+                    document.getElementById(alternativaCorreta).classList.add("text-success-with-bg");
+                }
+            });
+        }
+
+        function avancar() {
+            btnProx.disabled = true;
+            btnSubmeter.disabled = false;
+            
+            // Limpa os checkboxes e as cores para a próxima pergunta
+            desmarcarRadioButtons();
+            limparCoresBackgroundOpcoes();
+
+            // Se ainda tem questão, avança. Se for a última, finaliza.
+            if (numeroDaQuestaoAtual < quantidadeDeQuestoes - 1) {
+                numeroDaQuestaoAtual++; // Incrementa a questão AQUI
+                preencherHTMLcomQuestaoAtual(numeroDaQuestaoAtual);
+            } else {
+                finalizarJogo();
+            }
+        }
+
+        function limparCoresBackgroundOpcoes() {
+            const options = document.getElementsByName("option");
+            options.forEach((option) => {
+                const labelId = option.labels[0].id;
+                document.getElementById(labelId).classList.remove("text-danger-with-bg");
+                document.getElementById(labelId).classList.remove("text-success-with-bg");
+            });
+        }
+
+        function desmarcarRadioButtons() {
+            const options = document.getElementsByName("option");
+            for (let i = 0; i < options.length; i++) {
+                options[i].checked = false;
+            }
+        }
+
+        function finalizarJogo() {
+            document.getElementById('jogo').style.display = "none";
+            document.getElementById('pontuacaoFinalJogo').style.display = "block";
+
+            const porcentagemFinalDeAcertos = pontuacaoFinal / quantidadeDeQuestoes;
+
+            let estiloEscolhido = "Clássico"; 
+            if (porcentagemFinalDeAcertos >= 0.8) estiloEscolhido = "Elegante";
+            else if (porcentagemFinalDeAcertos >= 0.6) estiloEscolhido = "Clássico";
+            else if (porcentagemFinalDeAcertos >= 0.4) estiloEscolhido = "Minimalista";
+            else estiloEscolhido = "Street";
+
+            let textoParaMensagemFinal = `Seu estilo é: <strong>${estiloEscolhido}</strong><br>Você acertou ${Math.round((porcentagemFinalDeAcertos) * 100)}% das questões.`;
+            document.getElementById('msgFinal').innerHTML = textoParaMensagemFinal;
+
+            salvarResultadoNoBanco(estiloEscolhido, pontuacaoFinal);
+        }
+
+        function tentarNovamente() {
+            window.location.reload();
+        }
+
+        function salvarResultadoNoBanco(estilo, pontuacao) {
+            const idUsuario = 1; 
+            fetch('http://localhost:3000/api/quiz/salvar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fk_usuario: idUsuario, estilo_escolhido: estilo, pontuacao: pontuacao })
+            })
+            .then(response => {
+                if (response.ok) console.log("Resultado salvo no banco!");
+            })
+            .catch(error => console.error("Erro de conexão com o servidor:", error));
+        }
+    </script>
+</body>
+</html>
