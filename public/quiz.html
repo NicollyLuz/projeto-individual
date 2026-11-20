@@ -301,15 +301,27 @@
             window.location.reload();
         }
 
-        function salvarResultadoNoBanco(estilo, pontuacao) {
-            const idUsuario = 1; 
-            fetch('http://localhost:3000/api/quiz/salvar', {
+              function salvarResultadoNoBanco(estilo, pontuacao) {
+            // Tenta pegar o ID real do usuário que logou (salvo no localStorage).
+            // Se não achar (teste), usa o 1 para não quebrar.
+            const idUsuario = localStorage.getItem('idUsuario') || 1; 
+
+            // CORRIGIDO: Porta 3333 e a rota correta "/quiz/salvar"
+            fetch('http://localhost:3333/quiz/salvar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ fk_usuario: idUsuario, estilo_escolhido: estilo, pontuacao: pontuacao })
+                body: JSON.stringify({ 
+                    fk_usuario: idUsuario, 
+                    estilo_escolhido: estilo, 
+                    pontuacao: pontuacao 
+                })
             })
             .then(response => {
-                if (response.ok) console.log("Resultado salvo no banco!");
+                if (response.ok) {
+                    console.log("Resultado salvo no banco!");
+                } else {
+                    console.error("Erro ao salvar no banco. Status:", response.status);
+                }
             })
             .catch(error => console.error("Erro de conexão com o servidor:", error));
         }

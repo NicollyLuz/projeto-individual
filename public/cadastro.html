@@ -26,6 +26,9 @@
         <li>|</li>
         <li><a href="login.html">Login</a></li>
         <li class="agora"><a href="#">Cadastro</a></li>
+         <!-- ADICIONE ESTA LINHA ABAIXO -->
+    <a href="quiz.html" style="color: #5c1324; font-weight: bold;">Quiz</a>
+</nav>
       </ul>
     </div>
   </div>
@@ -103,7 +106,7 @@
     console.log("Tentando cadastrar:", nomeVar, emailVar);
 
     // CORREÇÃO AQUI: Rota no singular (/usuario/cadastrar)
-    fetch("http://localhost:3000/usuario/cadastrar", {
+    fetch("http://localhost:3333/usuario/cadastrar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

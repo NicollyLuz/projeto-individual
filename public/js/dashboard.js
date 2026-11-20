@@ -1,104 +1,136 @@
-// Variáveis globais dos gráficos
-let chartRosca;
-let chartLinha;
+// ==========================================
+// 1. NAVEGAÇÃO ENTRE AS TELAS (Visão geral / Estilos)
+// ==========================================
+function mudarTela(telaAlvo) {
+    document.querySelectorAll('.tela').forEach(tela => tela.classList.remove('ativa'));
+    document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
 
-// Função de logout
-function logout() {
-    sessionStorage.clear(); // Limpa os dados do usuário
-    window.location.href = "login.html";
+    if (telaAlvo === 'visaoGeral') {
+        document.getElementById('tela-visaoGeral').classList.add('ativa');
+        document.getElementById('btnVisaoGeral').classList.add('active');
+    } else if (telaAlvo === 'estilos') {
+        document.getElementById('tela-estilos').classList.add('ativa');
+        document.getElementById('btnEstilos').classList.add('active');
+    }
 }
 
-// Mostra o nome do usuário logado na tela
-window.onload = function() {
-    const nome = sessionStorage.NOME_USUARIO || "visitante";
-    document.getElementById('nomeUsuario').innerText = `Olá, ${nome}!`;
+// ==========================================
+// 2. BUSCAR DADOS DO BANCO (Via Node.js)
+// ==========================================
+async function carregarDadosDoBanco() {
+    try {
+        // AQUI ESTÁ A MUDANÇA: Chama a rota que criamos no index.js
+        const resposta = await fetch('/dados-dashboard');
+        
+        if (!resposta.ok) throw new Error('Falha na resposta do servidor');
+        
+        const dados = await resposta.json();
+        renderizarDashboard(dados);
+
+    } catch (erro) {
+        console.error("Erro ao carregar dados:", erro);
+        alert("Não foi possível carregar os dados do banco de dados. Verifique se o servidor está rodando.");
+    }
+}
+
+// ==========================================
+// 3. PREENCHER A TELA COM OS DADOS REAIS
+// ==========================================
+function renderizarDashboard(dados) {
+    // Nome do usuário logado (Pega do localStorage que o login salvou)
+    const nomeSalvo = localStorage.getItem('nomeUsuario') || 'Visitante';
+    document.getElementById("nomeUsuario").innerText = "Olá, " + nomeSalvo + "!";
+
+    // --- TELA 1: VISÃO GERAL ---
+    document.getElementById("kpiTotalQuizzes").innerText = dados.totalQuizzes;
+    document.getElementById("kpiTotalUsuarios").innerText = dados.totalUsuarios;
+    document.getElementById("kpiEstiloMaisVotado").innerText = dados.estiloMaisVotado;
+    document.getElementById("kpiPorcentagem").innerText = dados.porcentagemEngajamento;
     
-    inicializarGraficos();
-    carregarDadosDashboard();
+    // Atualiza a barrinha de progresso rosa
+    document.getElementById("barraProgresso").style.width = dados.porcentagemEngajamento;
+
+    // --- TELA 2: ESTILOS (RANKING) ---
+    const ranking = dados.ranking;
     
-    // Atualiza a cada 5 segundos (tempo real)
-    setInterval(carregarDadosDashboard, 5000);
-};
+    if (ranking.length > 0) {
+        document.getElementById("kpiLider").innerText = ranking[0].nome;
+        document.getElementById("kpiLiderDesc").innerText = ranking[0].porcentagem + " dos leitores";
+        
+        const ultimo = ranking[ranking.length - 1];
+        document.getElementById("kpiMenosVotado").innerText = ultimo.nome;
+        document.getElementById("kpiMenosVotadoDesc").innerText = ultimo.porcentagem + " dos leitores";
+        
+        document.getElementById("kpiQtdEstilos").innerText = ranking.length;
+    } else {
+        document.getElementById("kpiLider").innerText = "-";
+        document.getElementById("kpiLiderDesc").innerText = "Aguardando respostas";
+        document.getElementById("kpiMenosVotado").innerText = "-";
+        document.getElementById("kpiMenosVotadoDesc").innerText = "Aguardando respostas";
+        document.getElementById("kpiQtdEstilos").innerText = "0";
+    }
 
-// Cria os gráficos vazios
-function inicializarGraficos() {
-    const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
-    chartRosca = new Chart(ctxDoughnut, {
-        type: 'doughnut',
-        data: {
-            labels: [],
-            datasets: [{
-                data: [],
-                backgroundColor: ['#5c1324', '#a63d55', '#d17a8a', '#e8b4be', '#f2d5d5'],
-                borderWidth: 0,
-                cutout: '70%'
-            }]
-        },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-    });
+    // Preenche a lista do Ranking
+    const containerRanking = document.getElementById("listaRanking");
+    containerRanking.innerHTML = "";
+    
+    if (ranking.length === 0) {
+        containerRanking.innerHTML = "<p style='color:#888; font-size:0.9rem;'>Nenhum quiz respondido ainda.</p>";
+    } else {
+        ranking.forEach((item, index) => {
+            containerRanking.innerHTML += `
+                <div class="ranking-item">
+                    <div class="rank-number">${index + 1}º</div>
+                    <div class="rank-info">
+                        <div class="rank-header">
+                            <span class="rank-name">${item.nome}</span>
+                            <span class="rank-votes">${item.votos}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${item.porcentagem};"></div>
+                        </div>
+                        <span class="rank-percent">${item.porcentagem}</span>
+                    </div>
+                </div>
+            `;
+        });
+    }
 
-    const ctxLine = document.getElementById('lineChart').getContext('2d');
-    chartLinha = new Chart(ctxLine, {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [{
-                label: 'Quizzes',
-                data: [],
-                borderColor: '#5c1324',
-                backgroundColor: 'rgba(92, 19, 36, 0.1)',
-                borderWidth: 2,
-                pointBackgroundColor: '#5c1324',
-                pointRadius: 4,
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
-        }
-    });
+    // --- TABELA DE ÚLTIMOS RESULTADOS ---
+    const corpoTabela = document.getElementById("corpoTabela");
+    corpoTabela.innerHTML = "";
+
+    if (dados.ultimosResultados.length === 0) {
+        corpoTabela.innerHTML = "<tr><td colspan='3' style='text-align:center; color:#888;'>Nenhum resultado recente.</td></tr>";
+    } else {
+        dados.ultimosResultados.forEach(item => {
+            // Formata a data
+            const dataObj = new Date(item.data_realizacao);
+            const dataFormatada = dataObj.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) + ' ' + dataObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+            // Cria a classe da cor baseada no estilo
+            const classeBadge = item.estilo.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+            corpoTabela.innerHTML += `
+                <tr>
+                    <td>${item.leitora}</td>
+                    <td><span class="badge badge-${classeBadge}">${item.estilo}</span></td>
+                    <td>${dataFormatada}</td>
+                </tr>
+            `;
+        });
+    }
 }
 
-// Busca os dados no Node.js e atualiza a tela
-function carregarDadosDashboard() {
-    fetch('http://localhost:3000/api/dashboard/dados') // <-- URL DO NODE
-        .then(response => response.json())
-        .then(dados => {
-            
-            // 1. Atualizar os Cards (KPIs)
-            document.getElementById('kpiTotalQuizzes').innerText = dados.totalQuizzes;
-            document.getElementById('kpiTotalUsuarios').innerText = dados.totalUsuarios;
-            
-            // Calcular porcentagem de quem fez o quiz
-            let porcentagem = 0;
-            if (dados.totalUsuarios > 0) {
-                porcentagem = Math.round((dados.totalQuizzes / dados.totalUsuarios) * 100);
-            }
-            document.getElementById('kpiPorcentagem').innerText = porcentagem + "%";
-            document.getElementById('barraProgresso').style.width = porcentagem + "%";
-
-            // Descobrir o estilo mais votado
-            if (dados.estilos.length > 0) {
-                // Ordena do mais votado para o menos
-                const estilosOrdenados = dados.estilos.sort((a, b) => b.total - a.total);
-                const maisVotado = estilosOrdenados[0];
-                document.getElementById('kpiEstiloMaisVotado').innerText = maisVotado.estilo_escolhido;
-                document.getElementById('kpiEstiloDesc').innerText = `${maisVotado.total} votos`;
-            }
-
-            // 2. Atualizar Gráfico de Rosca
-            chartRosca.data.labels = dados.estilos.map(item => item.estilo_escolhido);
-            chartRosca.data.datasets[0].data = dados.estilos.map(item => item.total);
-            chartRosca.update();
-
-            // 3. Atualizar Gráfico de Linha
-            chartLinha.data.labels = dados.porDia.map(item => item.momento_grafico);
-            chartLinha.data.datasets[0].data = dados.porDia.map(item => item.quantidade);
-            chartLinha.update();
-        })
-        .catch(error => console.error("Erro ao buscar dados da dashboard:", error));
+// ==========================================
+// 4. AÇÕES
+// ==========================================
+function fazerLogout() {
+    if (confirm("Deseja realmente sair do painel?")) {
+        localStorage.removeItem('nomeUsuario');
+        window.location.href = "login.html"; // Redireciona para a tela de login
+    }
 }
+
+// Inicia a busca assim que a página carregar
+window.onload = carregarDadosDoBanco;

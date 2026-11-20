@@ -27,6 +27,9 @@
                 <li>|</li>
                 <li class="agora"><a href="#">Login</a></li>
                 <li><a href="cadastro.html">Cadastro</a></li>
+                 <!-- ADICIONE ESTA LINHA ABAIXO -->
+    <a href="quiz.html" style="color: #5c1324; font-weight: bold;">Quiz</a>
+</nav>
             </ul>
         </div>
     </div>
@@ -91,7 +94,7 @@
         console.log("Tentando login com:", emailVar);
 
         // CORREÇÃO AQUI: Rota no singular (/usuario/autenticar)
-        fetch("http://localhost:3000/usuario/autenticar", {
+        fetch("http://localhost:3333/usuario/autenticar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
