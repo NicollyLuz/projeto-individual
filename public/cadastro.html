@@ -26,9 +26,7 @@
         <li>|</li>
         <li><a href="login.html">Login</a></li>
         <li class="agora"><a href="#">Cadastro</a></li>
-         <!-- ADICIONE ESTA LINHA ABAIXO -->
-    <a href="quiz.html" style="color: #5c1324; font-weight: bold;">Quiz</a>
-</nav>
+        <a href="quiz.html" style="color: #5c1324; font-weight: bold;">Quiz</a>
       </ul>
     </div>
   </div>
@@ -44,7 +42,7 @@
       <div class="card card-cadastro">
         <h2>Bem-vindo!</h2>
         <div class="formulario">
-        
+
           <div class="campo">
             <span>Nome:</span>
             <input id="nome_input" type="text" placeholder="Seu nome" />
@@ -55,11 +53,11 @@
           </div>
           <div class="campo">
             <span>Senha:</span>
-            <input id="senha_input" type="password" placeholder="******" />
+            <input id="senha_input" type="password" placeholder="******" minlength="8" />
           </div>
           <div class="campo">
             <span>Confirmação da Senha:</span>
-            <input id="confirmacao_senha_input" type="password" placeholder="******" />
+            <input id="confirmacao_senha_input" type="password" placeholder="******" minlength="8" />
           </div>
           <button class="botao" onclick="cadastrar()">Cadastrar</button>
         </div>
@@ -89,14 +87,33 @@
     var senhaVar = senha_input.value;
     var confirmacaoSenhaVar = confirmacao_senha_input.value;
 
-    if (nomeVar == "" || emailVar == "" || senhaVar == "" || confirmacaoSenhaVar == "") {
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML = "Por favor, preencha todos os campos!";
-      return false;
-    } else {
-      setInterval(sumirMensagem, 5000);
+    // ===== VETOR com os campos do formulário =====
+    var campos = [
+      { valor: nomeVar,               nome: "Nome" },
+      { valor: emailVar,              nome: "E-mail" },
+      { valor: senhaVar,              nome: "Senha" },
+      { valor: confirmacaoSenhaVar,   nome: "Confirmação de Senha" }
+    ];
+
+    // ===== FOR percorrendo o vetor para validar campos vazios =====
+    for (var i = 0; i < campos.length; i++) {
+      if (campos[i].valor == "") {
+        cardErro.style.display = "block";
+        mensagem_erro.innerHTML = "Por favor, preencha o campo: " + campos[i].nome;
+        return false;
+      }
     }
 
+    setInterval(sumirMensagem, 5000);
+
+    // ===== Validação de tamanho mínimo da senha (8 caracteres) =====
+    if (senhaVar.length < 8) {
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML = "A senha deve ter no mínimo 8 caracteres!";
+      return false;
+    }
+
+    // ===== Validação de confirmação de senha =====
     if (senhaVar !== confirmacaoSenhaVar) {
       cardErro.style.display = "block";
       mensagem_erro.innerHTML = "As senhas não coincidem!";
@@ -148,3 +165,4 @@
     cardErro.style.display = "none";
   }
 </script>
+</html>

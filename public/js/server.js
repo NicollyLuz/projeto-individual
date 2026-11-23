@@ -19,8 +19,8 @@ app.use(cors()); // Libera o acesso para o seu front-end (Live Server)
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'fashionLux',
-    password: 'fashionlux123', // <--- COLOQUE A SENHA DO SEU MYSQL AQUI
-    database: 'fashionLux'
+    password: 'fashionLux@123', // <--- COLOQUE A SENHA DO SEU MYSQL AQUI
+    database: 'fashion'
 });
 
 // ==========================================

@@ -27,9 +27,7 @@
                 <li>|</li>
                 <li class="agora"><a href="#">Login</a></li>
                 <li><a href="cadastro.html">Cadastro</a></li>
-                 <!-- ADICIONE ESTA LINHA ABAIXO -->
-    <a href="quiz.html" style="color: #5c1324; font-weight: bold;">Quiz</a>
-</nav>
+                <a href="quiz.html" style="color: #5c1324; font-weight: bold;">Quiz</a>
             </ul>
         </div>
     </div>
@@ -77,9 +75,6 @@
 
 <script>
     function entrar() {
-        // Se você tiver a função aguardar() no sessao.js, descomente a linha abaixo
-        // aguardar(); 
-
         var emailVar = email_input.value;
         var senhaVar = senha_input.value;
 
@@ -93,7 +88,6 @@
 
         console.log("Tentando login com:", emailVar);
 
-        // CORREÇÃO AQUI: Rota no singular (/usuario/autenticar)
         fetch("http://localhost:3333/usuario/autenticar", {
             method: "POST",
             headers: {
@@ -108,10 +102,15 @@
                 resposta.json().then(json => {
                     console.log("Usuário autenticado:", json);
 
-                    // Salva os dados na sessão do navegador
+                    // --- CORREÇÃO AQUI ---
+                    // 1. Salva no sessionStorage (padrão antigo do seu projeto)
                     sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.NOME_USUARIO = json.nome;
                     sessionStorage.ID_USUARIO = json.id;
+
+                    // 2. Salva no localStorage (é o que a Dashboard e o Quiz estão lendo!)
+                    localStorage.setItem('nomeUsuario', json.nome);
+                    localStorage.setItem('idUsuario', json.id);
 
                     setTimeout(function () {
                         window.location = "dashboard.html"; 
@@ -122,7 +121,6 @@
                     console.error(texto);
                     cardErro.style.display = "block";
                     mensagem_erro.innerHTML = "E-mail ou senha incorretos.";
-                    // finalizarAguardar(texto);
                 });
             }
         }).catch(function (erro) {
@@ -138,3 +136,4 @@
         cardErro.style.display = "none"
     }
 </script>
+</html>
