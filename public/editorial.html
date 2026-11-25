@@ -1,131 +1,85 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Fashion Lux | Editorial</title>
-
-    <script src="./js/sessao.js"></script>
-
-    <link rel="stylesheet" href="./css/estilo.css">
-    <link rel="icon" href="./assets/icon/favicon2.ico">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fashion Lux | Editorial</title>
+  <script src="./js/sessao.js"></script>
+  <link rel="stylesheet" href="./css/estilo.css" />
+  <link rel="icon" href="./assets/icon/favicon2.ico" />
 </head>
 
-<!-- ALTERADO: classe "pagina-historia" no body para o estilo valer só nesta página -->
+<!-- "pagina-historia" no body: os estilos .hist-* e .pagina-historia só valem aqui -->
 <body class="pagina-historia">
 
-    <!--header inicio-->
-    <div class="header">
-        <div class="container">
-            <!-- ALTERADO: "Lux" dentro de um span para ficar na cor vinho -->
-            <h1 class="titulo">Fashion <span>Lux</span></h1>
-            <ul class="navbar">
-                <li>
-                    <a href="./index.html">Tendências</a>
-                </li>
-                <li class="agora">Editorial</li>
-                <li>|</li>
-                <li>
-                    <a href="./login.html">Login</a>
-                </li>
-                <li>
-                    <a href="./login.html">Cadastro</a>
-                </li>
-                   <!-- ADICIONE ESTA LINHA ABAIXO -->
-    <a href="quiz.html" style="color: #5c1324; font-weight: bold;">Quiz</a>
-</nav>
-            </ul>
-        </div>
-    </div>
+  <!-- CABEÇALHO: "Lux" em span para ficar vinho -->
+  <div class="header"><div class="container">
+    <h1 class="titulo">Fashion <span>Lux</span></h1>
+    <ul class="navbar">
+      <li><a href="./index.html">Tendências</a></li>
+      <li class="agora">Editorial</li>
+      <li>|</li>
+      <li><a href="./login.html">Login</a></li>
+      <li><a href="./login.html">Cadastro</a></li>
+      <a href="quiz.html" style="color:#5c1324; font-weight:bold">Quiz</a>
+    </ul>
+  </div></div>
 
+  <div class="editorial">
 
-    <!-- ALTERADO: o antigo "simulador" virou a página "História da Moda" -->
-    <div class="editorial">
+    <!-- HERO: faixa escura com título e subtítulo -->
+    <div class="hist-hero"><div class="container">
+      <h2>História<br>da Moda</h2>
+      <p>Uma jornada através do tempo,<br>estilo e cultura.</p>
+    </div></div>
 
-        <!-- NOVO: faixa escura com título e subtítulo (hero) -->
-        <div class="hist-hero">
-            <div class="container">
-                <h2>História<br>da Moda</h2>
-                <p>Uma jornada através do tempo,<br>estilo e cultura.</p>
-            </div>
-        </div>
+    <!-- SEÇÃO 1: foto + texto "Da antiguidade às passarelas" -->
+    <div class="hist-secao"><div class="container">
+      <img src="assets/imgs/chanel.jpg" alt="Retrato em preto e branco">
+      <div>
+        <p class="hist-rotulo">Um breve percurso</p>
+        <h3>Da antiguidade<br>às passarelas</h3>
+        <p>A moda sempre foi mais do que roupa.</p>
+        <p>Ela é expressão, cultura, arte e poder.</p>
+        <p>Desde os trajes da antiguidade até os desfiles contemporâneos, a moda reflete os costumes e transforma o mundo.</p>
+      </div>
+    </div></div>
 
-        <!-- NOVO: seção "Da antiguidade às passarelas" -->
-        <div class="hist-secao">
-            <div class="container">
-                <!-- troque o src por uma foto sua -->
-                <img src="assets/imgs/chanel.jpg" alt="Retrato em preto e branco">
-                <div>
-                    <p class="hist-rotulo">Um breve percurso</p>
-                    <h3>Da antiguidade<br>às passarelas</h3>
-                    <p>A moda sempre foi mais do que roupa.</p>
-                    <p>Ela é expressão, cultura, arte e poder.</p>
-                    <p>Desde os trajes da antiguidade até os desfiles contemporâneos, a moda reflete os costumes e
-                        transforma o mundo.</p>
-                </div>
-            </div>
-        </div>
+    <!-- SEÇÃO 2: texto + botão + galeria de 3 fotos LADO A LADO -->
+    <div class="hist-icones"><div class="container">
+      <div class="texto">
+        <p class="hist-rotulo">Grandes marcos</p>
+        <h3>Ícones que<br>marcaram a história</h3>
+        <p>De Coco Chanel a Alexander McQueen, grandes nomes revolucionaram o jeito de se vestir e deixaram um legado eterno na indústria da moda.</p>
 
-        <!-- NOVO: seção "Ícones que marcaram a história" -->
-        <div class="hist-icones">
-            <div class="container">
-                <div class="texto">
-                    <p class="hist-rotulo">Grandes marcos</p>
-                    <h3>Ícones que<br>marcaram a história</h3>
-                    <p>De Coco Chanel a Alexander McQueen, grandes nomes revolucionaram o jeito de se vestir e
-                        deixaram um legado eterno na indústria da moda.</p>
+        <!-- Botão chama mostrarMais() → preenche a div_mensagem -->
+        <button class="hist-botao" onclick="mostrarMais()">Conheça mais</button>
+        <div id="div_mensagem"></div>
+      </div>
 
-                    <!-- NOVO: botão que chama a função mostrarMais() quando clica -->
-                    <button class="hist-botao" onclick="mostrarMais()">Conheça mais</button>
+      <!-- GALERIA: 3 fotos do lado da outra (troque os src pelas suas fotos) -->
+      <div class="hist-galeria">
+        <img src="assets/imgs/dior.jpg"        alt="Ícone da moda 1">
+        <img src="assets/imgs/fashion.jpg"     alt="Ícone da moda 2">
+        <img src="assets/pretoebranco.jpg"     alt="Ícone da moda 3">
+      </div>
+    </div></div>
 
-                    <!-- NOVO: div vazia onde o JavaScript escreve a mensagem -->
-                    <div id="div_mensagem"></div>
-                </div>
+    <!-- FAIXA VINHO com frase final -->
+    <div class="hist-frase"><div class="container">
+      <h3>A moda é história,<br>mas também é futuro.</h3>
+      <p>E continua se reinventando, sempre.</p>
+    </div></div>
 
-                <!-- NOVO: três fotos estilo polaroid + coração (troque os src pelas suas fotos) -->
-                <div class="hist-polaroids">
-                    <img src="assets/imgs/dior.jpg" alt="Ícone da moda 1">
-                    <img src="assets/imgs/fashion.jpg" alt="Ícone da moda 2">
-                    <img src="assets/pretoebranco.jpg" alt="Ícone da moda 3">
-                </div>
-            </div>
-        </div>
+  </div>
 
-        <!-- NOVO: faixa vinho com a frase final -->
-        <div class="hist-frase">
-            <div class="container">
-                <h3>A moda é história,<br>mas também é futuro.</h3>
-                <p>E continua se reinventando, sempre.</p>
-            </div>
-        </div>
+  <div class="footer"><div class="container"><h4>© 2026 FASHION LUX</h4></div></div>
 
-    </div>
-    <!-- fim da página editorial -->
-
-    <!--footer inicio-->
-    <div class="footer">
-        <div class="container">
-            <h4>© 2026 FASHION LUX</h4>
-        </div>
-    </div>
-    <!--footer fim-->
-
-    <!-- NOVO: JavaScript básico -->
-    <script>
-        // FUNÇÃO mostrarMais(): roda quando clica no botão "Conheça mais"
-        function mostrarMais() {
-            // guarda o texto numa variável (let)
-            let mensagem = "Coco Chanel (nascida Gabrielle Bonheur Chanel, em 19 de agosto de 1883, e falecida em 10 de janeiro de 1971) foi uma estilista e empresária francesa, fundadora da marca Chanel. Ela transformou a moda do século XX ao substituir roupas rígidas e restritivas por peças mais simples, soltas e funcionais.<br><br> Lee Alexander McQueen (nascido em 17 de março de 1969 e falecido em 11 de fevereiro de 2010) foi um estilista britânico conhecido por unir alfaiataria impecável com desfiles teatrais e provocativos. Ele se tornou um dos nomes mais influentes da moda mundial entre os anos 1990 e 2000.";
-
-            // escreve o texto dentro da div_mensagem
-            div_mensagem.innerHTML = mensagem;
-        }
-    </script>
-
+  <script>
+    // Mostra o texto longo dentro da div_mensagem quando clica em "Conheça mais"
+    function mostrarMais() {
+      div_mensagem.innerHTML = "Coco Chanel (nascida Gabrielle Bonheur Chanel, em 19 de agosto de 1883, e falecida em 10 de janeiro de 1971) foi uma estilista e empresária francesa, fundadora da marca Chanel. Ela transformou a moda do século XX ao substituir roupas rígidas e restritivas por peças mais simples, soltas e funcionais.<br><br>Lee Alexander McQueen (nascido em 17 de março de 1969 e falecido em 11 de fevereiro de 2010) foi um estilista britânico conhecido por unir alfaiataria impecável com desfiles teatrais e provocativos. Ele se tornou um dos nomes mais influentes da moda mundial entre os anos 1990 e 2000.";
+    }
+  </script>
 </body>
-
 </html>

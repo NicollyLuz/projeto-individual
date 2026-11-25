@@ -525,40 +525,21 @@ body.pagina-historia {
   line-height: 1.6;
 }
 
-/* Container das fotos estilo polaroid */
-.hist-polaroids {
+/* ===== GALERIA DO EDITORIAL: 3 fotos lado a lado ===== */
+/* display:flex + gap deixa as fotos em linha com espaço entre elas */
+.hist-galeria {
   display: flex;
+  gap: 15px;          /* espaço entre as fotos */
   align-items: center;
 }
 
-/* Cada foto vira uma polaroid: borda branca grossa (mais grossa embaixo) e sombra.
-   O margin-left negativo faz as fotos se sobreporem um pouco */
-.hist-polaroids img {
+/* Cada foto: tamanho fixo, corta sem distorcer e arredonda os cantos */
+.hist-galeria img {
   width: 130px;
   height: 170px;
-  object-fit: cover;
-  background-color: white;
-  border: none;
-  padding: 8px 8px 25px 8px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
-  margin-left: -15px;
+  object-fit: cover;  /* corta pra caber sem achatar */
+  border-radius: 6px;
 }
-
-/* Inclina cada foto para um lado (rotate) para ficar com cara de foto jogada */
-.hist-polaroids img:nth-child(1) {
-  transform: rotate(-6deg);
-}
-
-/* A foto do meio é inclinada e sobe um pouco */
-.hist-polaroids img:nth-child(2) {
-  transform: rotate(2deg);
-  margin-top: -30px;
-}
-
-.hist-polaroids img:nth-child(3) {
-  transform: rotate(6deg);
-}
-
 
 /* ---------- FAIXA VINHO COM A FRASE FINAL ---------- */
 

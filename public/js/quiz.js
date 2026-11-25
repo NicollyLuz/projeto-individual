@@ -1,180 +1,165 @@
-// ==========================================
-// 1. PERGUNTAS (10 perguntas com pontuação por estilo)
-// ==========================================
+// ============================================================
+// PERGUNTAS: cada alternativa soma 1 ponto pro estilo dela
+// (não existe "certo/errado", é um teste de perfil)
+// ============================================================
 const listaDeQuestoes = [
-    { pergunta: "Como você escolhe uma roupa pela manhã?", alternativaA: "Peças atemporais", alternativaB: "Roupas largas e urbanas", alternativaC: "Cores neutras", alternativaD: "Conforto e tecnologia" },
-    { pergunta: "Qual peça não pode faltar no seu guarda-roupa?", alternativaA: "Blazer", alternativaB: "Tênis de streetwear", alternativaC: "Camiseta básica", alternativaD: "Moletom" },
-    { pergunta: "Que tipo de tecido você prefere?", alternativaA: "Lã e seda", alternativaB: "Jeans e moletom", alternativaC: "Algodão e linho", alternativaD: "Dry-fit" },
-    { pergunta: "Como você monta um look para um jantar?", alternativaA: "Terno impecável", alternativaB: "Streetwear arrumado", alternativaC: "Peça única clean", alternativaD: "Alfaiataria clássica" },
-    { pergunta: "Qual acessório combina com você?", alternativaA: "Relógio clássico", alternativaB: "Boné ou corrente", alternativaC: "Óculos discretos", alternativaD: "Brinco de impacto" },
-    { pergunta: "Qual cor domina seu armário?", alternativaA: "Preto, branco e cinza", alternativaB: "Cores vibrantes", alternativaC: "Tons terrosos", alternativaD: "Tons claros" },
-    { pergunta: "Como você se sente mais confortável?", alternativaA: "Bem arrumada", alternativaB: "Livre e autêntica", alternativaC: "Simples e prática", alternativaD: "Em movimento" },
-    { pergunta: "Que tipo de calçado você usa mais?", alternativaA: "Sapato de couro", alternativaB: "Tênis chunky", alternativaC: "Mule ou sapatilha", alternativaD: "Tênis de corrida" },
-    { pergunta: "Qual estilo te inspira?", alternativaA: "Chanel, Dior", alternativaB: "Balenciaga, Supreme", alternativaC: "COS, Uniqlo", alternativaD: "Nike, Adidas" },
-    { pergunta: "Seu estilo em uma palavra:", alternativaA: "Sofisticado", alternativaB: "Urbano", alternativaC: "Essencial", alternativaD: "Ativo" }
+  { pergunta: "Como você escolhe uma roupa pela manhã?", alternativas: [
+    { texto: "Peças atemporais e alfaiataria",  estilo: "Clássico" },
+    { texto: "Roupas largas e cultura urbana",  estilo: "Street" },
+    { texto: "Menos é mais, cores neutras",     estilo: "Minimalista" },
+    { texto: "Conforto e tecidos tecnológicos", estilo: "Esportivo" } ]},
+  { pergunta: "Qual peça não pode faltar no seu guarda-roupa?", alternativas: [
+    { texto: "Blazer bem cortado",             estilo: "Clássico" },
+    { texto: "Tênis de streetwear",            estilo: "Street" },
+    { texto: "Camiseta básica de algodão",     estilo: "Minimalista" },
+    { texto: "Legging ou moletom",             estilo: "Esportivo" } ]},
+  { pergunta: "Que tipo de tecido você prefere?", alternativas: [
+    { texto: "Lã e seda",       estilo: "Elegante" },
+    { texto: "Jeans e moletom", estilo: "Street" },
+    { texto: "Algodão e linho", estilo: "Minimalista" },
+    { texto: "Dry-fit e nylon", estilo: "Esportivo" } ]},
+  { pergunta: "Como você monta um look para um jantar?", alternativas: [
+    { texto: "Vestido ou terno impecável", estilo: "Elegante" },
+    { texto: "Alfaiataria clássica",       estilo: "Clássico" },
+    { texto: "Peça única clean",           estilo: "Minimalista" },
+    { texto: "Streetwear arrumado",        estilo: "Street" } ]},
+  { pergunta: "Qual acessório combina com você?", alternativas: [
+    { texto: "Relógio clássico",           estilo: "Clássico" },
+    { texto: "Boné ou corrente",           estilo: "Street" },
+    { texto: "Óculos discretos",           estilo: "Minimalista" },
+    { texto: "Brinco ou colar de impacto", estilo: "Elegante" } ]},
+  { pergunta: "Qual cor domina seu armário?", alternativas: [
+    { texto: "Preto, branco e cinza",      estilo: "Minimalista" },
+    { texto: "Cores vibrantes e estampas", estilo: "Street" },
+    { texto: "Tons terrosos e neutros",    estilo: "Clássico" },
+    { texto: "Tons claros",                estilo: "Esportivo" } ]},
+  { pergunta: "Como você se sente mais confortável?", alternativas: [
+    { texto: "Bem arrumada e sofisticada", estilo: "Elegante" },
+    { texto: "Livre e autêntica",          estilo: "Street" },
+    { texto: "Simples e prática",          estilo: "Minimalista" },
+    { texto: "Em movimento",               estilo: "Esportivo" } ]},
+  { pergunta: "Que tipo de calçado você usa mais?", alternativas: [
+    { texto: "Sapato de couro",   estilo: "Clássico" },
+    { texto: "Tênis chunky",      estilo: "Street" },
+    { texto: "Mule ou sapatilha", estilo: "Minimalista" },
+    { texto: "Tênis de corrida",  estilo: "Esportivo" } ]},
+  { pergunta: "Qual marca/estilo te inspira?", alternativas: [
+    { texto: "Chanel, Dior",        estilo: "Elegante" },
+    { texto: "Balenciaga, Supreme", estilo: "Street" },
+    { texto: "COS, Uniqlo",         estilo: "Minimalista" },
+    { texto: "Nike, Adidas",        estilo: "Esportivo" } ]},
+  { pergunta: "Seu estilo em uma palavra?", alternativas: [
+    { texto: "Sofisticado", estilo: "Elegante" },
+    { texto: "Urbano",      estilo: "Street" },
+    { texto: "Essencial",   estilo: "Minimalista" },
+    { texto: "Ativo",       estilo: "Esportivo" } ]}
 ];
 
-// ==========================================
-// 2. VARIÁVEIS DE CONTROLE
-// ==========================================
-let numeroDaQuestaoAtual = 0;
-let quantidadeDeQuestoes = listaDeQuestoes.length;
-let pontos = { "Elegante": 0, "Street": 0, "Minimalista": 0, "Clássico": 0, "Esportivo": 0 };
+// ============================================================
+// ESTADO DO QUIZ
+// ============================================================
+// Lista fixa de estilos possíveis (usada em várias partes)
+const ESTILOS = ['Clássico', 'Street', 'Minimalista', 'Esportivo', 'Elegante'];
 
-// ==========================================
-// 3. INICIALIZAÇÃO
-// ==========================================
-function iniciarQuiz() {
-    document.getElementById('pontuacao').style.display = "flex";
-    document.getElementById('jogo').style.display = "flex";
-    document.getElementById('btnIniciarQuiz').style.display = "none";
-    document.getElementById('qtdQuestoes').innerHTML = quantidadeDeQuestoes;
-    preencherHTMLcomQuestaoAtual(0);
-    btnSubmeter.disabled = false;
-    btnProx.disabled = true;
-    btnTentarNovamente.disabled = true;
+// Índice da pergunta atual (0 = primeira)
+let atual = 0;
+
+// Objeto de pontos: { "Clássico": 0, "Street": 0, ... } via Object.fromEntries
+let pontos = Object.fromEntries(ESTILOS.map(e => [e, 0]));
+
+// ============================================================
+// INICIALIZAÇÃO: roda quando a página carrega
+// ============================================================
+window.onload = () => {
+  // Se não tem usuário logado, manda pro login
+  if (!localStorage.getItem('idUsuario')) return location = 'login.html';
+
+  // Mostra o jogo e escreve "1 de 10"
+  jogo.style.display = "flex";
+  qtdQuestoes.innerHTML = listaDeQuestoes.length;
+  mostrar(0);  // carrega a primeira pergunta
+};
+
+// ============================================================
+// mostrar(i): preenche a tela com a pergunta de índice i
+// ============================================================
+function mostrar(i) {
+  atual = i;
+  const q = listaDeQuestoes[i];
+
+  // Cabeçalho: "Questão X" e o texto da pergunta
+  spanNumeroDaQuestaoAtual.innerHTML = i + 1;
+  spanQuestaoExibida.innerHTML = q.pergunta;
+
+  // Injeta o texto das 4 alternativas nos spans correspondentes
+  [textoOpcaoUm, textoOpcaoDois, textoOpcaoTres, textoOpcaoQuatro]
+    .forEach((el, k) => el.innerHTML = q.alternativas[k].texto);
+
+  // Reseta os radios (desmarca + reabilita) e tira a cor de "marcada"
+  document.querySelectorAll('input[name="option"]').forEach(r => { r.checked = false; r.disabled = false; });
+  document.querySelectorAll('.opcao-container').forEach(l => l.classList.remove('marcada'));
+
+  // Submeter liberado, Avançar bloqueado (só libera depois de responder)
+  btnSubmeter.disabled = false;
+  btnProx.disabled = true;
 }
 
-// ==========================================
-// 4. PREENCHER PERGUNTA NA TELA
-// ==========================================
-function preencherHTMLcomQuestaoAtual(index) {
-    habilitarAlternativas(true);
-    desmarcarRadioButtons();
-    limparCoresBackgroundOpcoes();
-    
-    const questaoAtual = listaDeQuestoes[index];
-    numeroDaQuestaoAtual = index;
-    
-    document.getElementById("spanNumeroDaQuestaoAtual").innerHTML = index + 1;
-    document.getElementById("spanQuestaoExibida").innerHTML = questaoAtual.pergunta;
-    
-    document.getElementById("textoOpcaoUm").innerHTML = questaoAtual.alternativaA;
-    document.getElementById("textoOpcaoDois").innerHTML = questaoAtual.alternativaB;
-    document.getElementById("textoOpcaoTres").innerHTML = questaoAtual.alternativaC;
-    document.getElementById("textoOpcaoQuatro").innerHTML = questaoAtual.alternativaD;
-    
-    btnSubmeter.disabled = false;
-    btnProx.disabled = true;
-}
-
-// ==========================================
-// 5. SUBMETER (SOMAR PONTOS - SEM CERTO/ERRADO)
-// ==========================================
+// ============================================================
+// submeter(): pega a alternativa marcada e soma 1 ponto pro estilo
+// ============================================================
 function submeter() {
-    const options = document.getElementsByName("option");
-    let hasChecked = false;
-    for (let i = 0; i < options.length; i++) {
-        if (options[i].checked) { hasChecked = true; break; }
-    }
+  // Qual radio está marcado? Se nenhum, avisa e para
+  const escolhida = document.querySelector('input[name="option"]:checked');
+  if (!escolhida) return alert("Escolha uma opção antes de submeter.");
 
-    if (!hasChecked) {
-        alert("Escolha uma opção antes de submeter.");
-        return;
-    }
+  // Pega o índice (0-3) e o estilo correspondente, soma +1
+  pontos[listaDeQuestoes[atual].alternativas[Number(escolhida.value)].estilo]++;
 
-    // Lógica de pontuação: dependendo da alternativa escolhida, soma ponto pro estilo
-    const escolha = document.querySelector('input[name="option"]:checked').value;
-    
-    if (escolha === "alternativaA") pontos["Elegante"]++;       // Ex: Opção A puxa pro Elegante
-    else if (escolha === "alternativaB") pontos["Street"]++;    // Ex: Opção B puxa pro Street
-    else if (escolha === "alternativaC") pontos["Minimalista"]++; // Ex: Opção C puxa pro Minimalista
-    else if (escolha === "alternativaD") pontos["Clássico"]++;  // Ex: Opção D puxa pro Clássico
+  // Marca visualmente a opção + bloqueia os radios
+  escolhida.closest('.opcao-container').classList.add('marcada');
+  document.querySelectorAll('input[name="option"]').forEach(r => r.disabled = true);
 
-    // Bloqueia botões e libera o "Avançar"
-    btnSubmeter.disabled = true;
-    btnProx.disabled = false;
-    habilitarAlternativas(false);
+  // Bloqueia Submeter e libera Avançar
+  btnSubmeter.disabled = true;
+  btnProx.disabled = false;
 }
 
-// ==========================================
-// 6. AVANÇAR PARA PRÓXIMA QUESTÃO
-// ==========================================
+// ============================================================
+// avancar(): vai pra próxima pergunta ou finaliza se for a última
+// ============================================================
 function avancar() {
-    if (numeroDaQuestaoAtual < quantidadeDeQuestoes - 1) {
-        numeroDaQuestaoAtual++;
-        preencherHTMLcomQuestaoAtual(numeroDaQuestaoAtual);
-    } else {
-        finalizarJogo();
-    }
+  atual < listaDeQuestoes.length - 1 ? mostrar(atual + 1) : finalizar();
 }
 
-// ==========================================
-// 7. FUNÇÕES AUXILIARES
-// ==========================================
-function habilitarAlternativas(status) {
-    const opcaoEscolhida = !status; // Inverte o valor (true vira false)
-    primeiraOpcao.disabled = opcaoEscolhida;
-    segundaOpcao.disabled = opcaoEscolhida;
-    terceiraOpcao.disabled = opcaoEscolhida;
-    quartaOpcao.disabled = opcaoEscolhida;
+// ============================================================
+// finalizar(): descobre o estilo vencedor e mostra o resultado
+// ============================================================
+function finalizar() {
+  // Esconde o jogo e mostra a tela de resultado
+  jogo.style.display = "none";
+  pontuacaoFinalJogo.style.display = "block";
+
+  // reduce: percorre ESTILOS e devolve o que tem mais pontos
+  let vencedor = ESTILOS.reduce((a, e) => pontos[e] > pontos[a] ? e : a, ESTILOS[0]);
+
+  // Mostra a mensagem e salva no banco
+  msgFinal.innerHTML = `Seu estilo combina com: <strong>${vencedor}</strong>`;
+  salvar(vencedor, pontos[vencedor]);
 }
 
-function desmarcarRadioButtons() {
-    const options = document.getElementsByName("option");
-    for (let i = 0; i < options.length; i++) {
-        options[i].checked = false;
-    }
-}
+// Recarrega a página pra começar de novo
+function tentarNovamente() { location.reload(); }
 
-function limparCoresBackgroundOpcoes() {
-    const labels = document.querySelectorAll('.opcao-container');
-    labels.forEach(l => l.classList.remove("text-danger-with-bg", "text-success-with-bg"));
-}
+// ============================================================
+// salvar(): envia o resultado pro backend (POST /quiz/salvar)
+// ============================================================
+function salvar(estilo, pontos) {
+  const id = localStorage.getItem('idUsuario');
+  if (!id) return;  // sem login, não salva
 
-// ==========================================
-// 8. FINALIZAR E MOSTRAR O RESULTADO
-// ==========================================
-function finalizarJogo() {
-    document.getElementById('jogo').style.display = "none";
-    document.getElementById('pontuacao').style.display = "none";
-    document.getElementById('msgFinal').style.display = "block";
-    
-    // Descobre qual estilo teve a maior pontuação
-    let estiloVencedor = "Clássico";
-    let maiorPontuacao = -1;
-    
-    for (let estilo in pontos) {
-        if (pontos[estilo] > maiorPontuacao) {
-            maiorPontuacao = pontos[estilo];
-            estiloVencedor = estilo;
-        }
-    }
-
-    // Monta a mensagem final
-    let texto = `Seu estilo é: <strong>${estiloVencedor}</strong>`;
-    document.getElementById('msgFinal').innerHTML = texto;
-
-    // Salva no banco (Conectado com a Dashboard)
-    salvarNoBanco(estiloVencedor, maiorPontuacao);
-}
-
-function tentarNovamente() {
-    window.location.reload();
-}
-
-// ==========================================
-// 9. CONEXÃO COM O BANCO DE DADOS / DASHBOARD
-// ==========================================
-function salvarNoBanco(estilo, pontuacao) {
-    const idUsuario = localStorage.getItem('idUsuario');
-    
-    // Se o usuário não estiver logado, avisa (mas não bloqueia o teste)
-    if (!idUsuario) {
-        console.warn("Aviso: Usuário não está logado. Salvando sem ID.");
-    }
-
-    fetch('/quiz/salvar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            fk_usuario: idUsuario || 1, // Usa 1 se estiver testando sem login
-            estilo_escolhido: estilo,
-            pontuacao: pontuacao
-        })
-    })
-    .then(r => {
-        if(r.ok) console.log("✅ Salvo no banco com sucesso!");
-    })
-    .catch(e => console.error("❌ Erro ao conectar com o servidor:", e));
+  fetch('/quiz/salvar', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fk_usuario: id, estilo_escolhido: estilo, pontuacao: pontos })
+  }).catch(e => console.error(e));
 }

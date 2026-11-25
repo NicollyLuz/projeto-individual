@@ -1,410 +1,367 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fashion Lux - Dashboard</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fashion Lux - Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* ===== RESET E LAYOUT BASE ===== */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Montserrat', sans-serif; }
+    body { background:#fcf5f5; color:#333; }
+    .dashboard-container { display:flex; min-height:100vh; }
 
-    <style>
-        /* ================= RESET ================= */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
-        body { background-color: #fcf5f5; color: #333; }
-        .dashboard-container { display: flex; min-height: 100vh; }
+    /* ===== SIDEBAR (menu lateral vinho) ===== */
+    .sidebar { width:250px; background:#5c1324; color:#fff; display:flex; flex-direction:column; justify-content:space-between; padding:30px 20px; flex-shrink:0; }
+    .logo { font-family:'Playfair Display', serif; font-size:1.8rem; font-weight:400; margin-bottom:5px; }
+    .logo span { color:#f4c2c2; }
+    .greeting { font-size:.85rem; color:#f4c2c2; margin-bottom:30px; font-style:italic; font-weight:600; }
+    .nav-menu { display:flex; flex-direction:column; gap:10px; }
+    .nav-item { text-decoration:none; color:#fff; padding:12px 15px; border-radius:4px; font-size:.9rem; transition:.3s; cursor:pointer; display:block; }
+    .nav-item:hover { background:#7a1c32; }
+    .nav-item.active { background:#a63d55; font-weight:600; }
+    .btn-logout { padding:10px 15px; width:100%; background:transparent; color:#fff; border:1px solid #a63d55; border-radius:4px; cursor:pointer; font-size:.9rem; transition:.3s; }
+    .btn-logout:hover { background:#a63d55; }
 
-        /* ================= SIDEBAR ================= */
-        .sidebar { width: 250px; background-color: #5c1324; color: white; display: flex; flex-direction: column; justify-content: space-between; padding: 30px 20px; flex-shrink: 0; }
-        .logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 400; margin-bottom: 5px; color: white; }
-        .logo span { color: #f4c2c2; }
-        .greeting { font-size: 0.85rem; color: #f4c2c2; margin-bottom: 30px; font-style: italic; font-weight: 600; }
-        .nav-menu { display: flex; flex-direction: column; gap: 10px; }
-        .nav-item { text-decoration: none; color: white; padding: 12px 15px; border-radius: 4px; font-size: 0.9rem; transition: 0.3s; cursor: pointer; display: block; }
-        .nav-item:hover { background-color: #7a1c32; }
-        .nav-item.active { background-color: #a63d55; font-weight: 600; }
-        .btn-logout { padding: 10px 15px; width: 100%; background-color: transparent; color: white; border: 1px solid #a63d55; border-radius: 4px; cursor: pointer; font-size: 0.9rem; transition: 0.3s; }
-        .btn-logout:hover { background-color: #a63d55; }
+    /* ===== CONTEÚDO PRINCIPAL ===== */
+    .main-content { flex:1; padding:40px; overflow-y:auto; }
+    /* .tela fica escondida por padrão; só a que tem .ativa aparece */
+    .tela { display:none; }
+    .tela.ativa { display:block; }
+    .header { margin-bottom:30px; }
+    .subtitle { font-size:.7rem; letter-spacing:2px; color:#888; font-weight:600; }
+    .header h2 { font-family:'Playfair Display', serif; font-size:2.2rem; color:#5c1324; font-weight:400; margin-top:5px; }
 
-        /* ================= CONTEÚDO PRINCIPAL ================= */
-        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
-        .tela { display: none; }
-        .tela.ativa { display: block; }
-        .header { margin-bottom: 30px; }
-        .subtitle { font-size: 0.7rem; letter-spacing: 2px; color: #888; font-weight: 600; }
-        .header h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #5c1324; font-weight: 400; margin-top: 5px; }
+    /* ===== CARDS DE KPI ===== */
+    .kpi-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:20px; margin-bottom:30px; }
+    .kpi-card { background:#fff; padding:20px; border-radius:8px; border:1px solid #f0e6e6; border-top:3px solid #5c1324; }
+    .kpi-card h3 { font-size:.65rem; color:#a63d55; letter-spacing:1px; margin-bottom:15px; font-weight:600; }
+    .kpi-value { font-family:'Playfair Display', serif; font-size:1.8rem; margin-bottom:5px; }
+    .kpi-desc { font-size:.75rem; color:#888; }
+    /* Barra de progresso reaproveitada no KPI e no ranking */
+    .progress-bar { width:100%; height:4px; background:#f0e6e6; border-radius:2px; overflow:hidden; }
+    .progress-fill { height:100%; background:#a63d55; border-radius:2px; transition:width .5s ease; }
 
-        /* ================= CARDS KPI ================= */
-        .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
-        .kpi-card { background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #f0e6e6; border-top: 3px solid #5c1324; }
-        .kpi-card h3 { font-size: 0.65rem; color: #a63d55; letter-spacing: 1px; margin-bottom: 15px; font-weight: 600; }
-        .kpi-value { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #333; margin-bottom: 5px; }
-        .kpi-desc { font-size: 0.75rem; color: #888; }
-        .progress-bar { width: 100%; height: 4px; background-color: #f0e6e6; border-radius: 2px; overflow: hidden; }
-        .progress-fill { height: 100%; background-color: #a63d55; border-radius: 2px; transition: width 0.5s ease; }
+    /* ===== GRIDS DE CONTEÚDO ===== */
+    .content-grid { display:grid; grid-template-columns:1.2fr 1fr; gap:20px; align-items:start; }
+    .card { background:#fff; padding:25px; border-radius:8px; border:1px solid #f0e6e6; }
+    .card h3 { font-family:'Playfair Display', serif; font-size:1.2rem; margin-bottom:25px; font-weight:400; }
 
-        /* ================= GRIDS ================= */
-        .content-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: start; }
-        .card { background-color: white; padding: 25px; border-radius: 8px; border: 1px solid #f0e6e6; }
-        .card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #333; margin-bottom: 25px; font-weight: 400; }
+    /* ===== LISTA DE RANKING ===== */
+    .ranking-list { display:flex; flex-direction:column; gap:20px; }
+    .ranking-item { display:flex; align-items:flex-start; gap:15px; }
+    .rank-number { font-family:'Playfair Display', serif; font-size:1.5rem; color:#5c1324; font-weight:700; min-width:30px; }
+    .rank-info { flex:1; }
+    .rank-header { display:flex; justify-content:space-between; margin-bottom:4px; }
+    .rank-name, .rank-votes { font-weight:600; font-size:.95rem; }
+    .rank-percent { display:block; text-align:right; font-size:.7rem; color:#888; margin-top:2px; }
 
-        /* ================= LISTA DE RANKING ================= */
-        .ranking-list { display: flex; flex-direction: column; gap: 20px; }
-        .ranking-item { display: flex; align-items: flex-start; gap: 15px; }
-        .rank-number { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #5c1324; font-weight: 700; min-width: 30px; }
-        .rank-info { flex: 1; }
-        .rank-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
-        .rank-name { font-weight: 600; font-size: 0.95rem; color: #333; }
-        .rank-votes { font-weight: 600; font-size: 0.9rem; color: #333; }
-        .rank-percent { display: block; text-align: right; font-size: 0.7rem; color: #888; margin-top: 2px; }
+    /* ===== TABELA ===== */
+    .results-table { width:100%; border-collapse:collapse; }
+    .results-table th { text-align:left; font-size:.65rem; color:#a63d55; font-weight:600; letter-spacing:1px; padding-bottom:15px; border-bottom:1px solid #f0e6e6; }
+    .results-table td { padding:12px 0; font-size:.85rem; border-bottom:1px solid #fcf5f5; }
+    .results-table tr:last-child td { border-bottom:none; }
 
-        /* ================= TABELA ================= */
-        .results-table { width: 100%; border-collapse: collapse; }
-        .results-table th { text-align: left; font-size: 0.65rem; color: #a63d55; font-weight: 600; letter-spacing: 1px; padding-bottom: 15px; border-bottom: 1px solid #f0e6e6; }
-        .results-table td { padding: 12px 0; font-size: 0.85rem; border-bottom: 1px solid #fcf5f5; color: #333; }
-        .results-table tr:last-child td { border-bottom: none; }
+    /* ===== BADGES (tags coloridas por estilo) ===== */
+    .badge { padding:4px 10px; border-radius:12px; font-size:.7rem; font-weight:600; color:#fff; text-transform:uppercase; }
+    .badge-classico   { background:#5c1324; }
+    .badge-street     { background:#d97a7a; }
+    .badge-minimalista{ background:#8c7a7a; }
+    .badge-esportivo  { background:#e0b0b0; color:#5c1324; }
+    .badge-elegante   { background:#a63d55; }
 
-        /* BADGES */
-        .badge { padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; color: white; text-transform: uppercase; }
-        .badge-classico { background-color: #5c1324; }
-        .badge-street { background-color: #d97a7a; }
-        .badge-minimalista { background-color: #8c7a7a; }
-        .badge-esportivo { background-color: #e0b0b0; color: #5c1324; }
-        .badge-elegante { background-color: #a63d55; }
-
-        /* RESPONSIVIDADE */
-        @media (max-width: 1024px) {
-            .content-grid, .kpi-grid, .charts-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+    /* ===== RESPONSIVIDADE: empilha tudo em 1 coluna ===== */
+    @media (max-width:1024px) {
+      .content-grid, .kpi-grid, .charts-grid { grid-template-columns:1fr; }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="dashboard-container">
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <div class="sidebar-top">
-                <h1 class="logo">Fashion <span>Lux</span></h1>
-                <p class="greeting" id="nomeUsuario">Carregando...</p>
-                
-                <nav class="nav-menu">
-                    <a class="nav-item active" id="btnVisaoGeral" onclick="mudarTela('visaoGeral')">Visão geral</a>
-                    <a class="nav-item" id="btnEstilos" onclick="mudarTela('estilos')">Estilos</a>
-                    <a class="nav-item" id="btnQuiz" onclick="mudarTela('quiz')">Fazer o Quiz</a>
-                </nav>
-            </div>
-            <button class="btn-logout" onclick="fazerLogout()">Sair</button>
-        </aside>
+<div class="dashboard-container">
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <div>
+      <h1 class="logo">Fashion <span>Lux</span></h1>
+      <!-- Nome do usuário logado (preenchido pelo JS) -->
+      <p class="greeting" id="nomeUsuario">Carregando...</p>
 
-        <!-- CONTEÚDO PRINCIPAL -->
-        <main class="main-content">
-            
-            <!-- TELA 1: VISÃO GERAL -->
-            <section id="tela-visaoGeral" class="tela ativa">
-                <header class="header">
-                    <span class="subtitle">PAINEL DA REVISTA</span>
-                    <h2>Qual é o estilo dos nossos leitores?</h2>
-                </header>
-
-                <section class="kpi-grid">
-                    <div class="kpi-card">
-                        <h3>FIZERAM O QUIZ</h3>
-                        <p class="kpi-value" id="kpiTotalQuizzes">0</p>
-                        <span class="kpi-desc">pessoas no total</span>
-                    </div>
-                    <div class="kpi-card">
-                        <h3>ESTILO MAIS VOTADO</h3>
-                        <p class="kpi-value" id="kpiEstiloMaisVotado">-</p>
-                        <span class="kpi-desc" id="kpiEstiloDesc">-</span>
-                    </div>
-                    <div class="kpi-card">
-                        <h3>CADASTRADOS NO SITE</h3>
-                        <p class="kpi-value" id="kpiTotalUsuarios">0</p>
-                        <span class="kpi-desc">usuários cadastrados</span>
-                    </div>
-                    <div class="kpi-card">
-                        <h3>CADASTRADOS QUE FIZERAM O QUIZ</h3>
-                        <p class="kpi-value" id="kpiPorcentagem">0%</p>
-                        <div class="progress-bar" style="margin-top: 10px;">
-                            <div class="progress-fill" id="barraProgresso" style="width: 0%;"></div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="charts-grid">
-                    <div class="card" style="grid-column: span 2;">
-                        <h3>Pessoas por estilo</h3>
-                        <div style="position: relative; height: 300px; width: 100%; max-width: 600px; margin: 0 auto;">
-                            <canvas id="graficoRosca"></canvas>
-                        </div>
-                    </div>
-                </section>
-            </section>
-
-            <!-- TELA 2: ESTILOS (RANKING) -->
-            <section id="tela-estilos" class="tela">
-                <header class="header">
-                    <span class="subtitle">RESULTADOS DO QUIZ</span>
-                    <h2>Ranking dos estilos</h2>
-                </header>
-
-                <section class="kpi-grid" style="grid-template-columns: repeat(3, 1fr);">
-                    <div class="kpi-card">
-                        <h3>ESTILO LÍDER</h3>
-                        <p class="kpi-value" id="kpiLider">-</p>
-                        <span class="kpi-desc" id="kpiLiderDesc">-</span>
-                    </div>
-                    <div class="kpi-card">
-                        <h3>ESTILOS DISPONÍVEIS</h3>
-                        <!-- CORRIGIDO: Agora está fixo em 5 no HTML -->
-                        <p class="kpi-value">5</p>
-                        <span class="kpi-desc">opções no quiz</span>
-                    </div>
-                    <div class="kpi-card">
-                        <h3>MENOS VOTADO</h3>
-                        <p class="kpi-value" id="kpiMenosVotado">-</p>
-                        <span class="kpi-desc" id="kpiMenosVotadoDesc">-</span>
-                    </div>
-                </section>
-
-                <section class="content-grid">
-                    <div class="card ranking-card">
-                        <h3>Do mais ao menos votado</h3>
-                        <div class="ranking-list" id="listaRanking"></div>
-                    </div>
-
-                    <div class="card results-card">
-                        <h3>Últimos resultados</h3>
-                        <table class="results-table">
-                            <thead>
-                                <tr>
-                                    <th>LEITORA</th>
-                                    <th>ESTILO</th>
-                                    <th>QUANDO</th>
-                                </tr>
-                            </thead>
-                            <tbody id="corpoTabela"></tbody>
-                        </table>
-                    </div>
-                </section>
-            </section>
-
-            <!-- TELA 3: FAZER O QUIZ -->
-            <section id="tela-quiz" class="tela">
-                <header class="header">
-                    <span class="subtitle">DESCUBRA SEU ESTILO</span>
-                    <h2>Quiz de Moda</h2>
-                </header>
-
-                <div class="card" style="text-align: center; padding: 50px;">
-                    <h3 style="margin-bottom: 15px;">Qual estilo combina com você?</h3>
-                    <p style="color: #666; margin-bottom: 30px; font-size: 1.1rem;">
-                        Responda 10 perguntas rápidas e descubra qual é a sua essência na moda!
-                    </p>
-                    <a href="quiz.html" class="btn-logout" style="display: inline-block; width: auto; padding: 15px 40px; text-decoration: none; background-color: #5c1324; font-weight: bold;">
-                        Iniciar o Quiz
-                    </a>
-                </div>
-            </section>
-
-        </main>
+      <!-- Menu: cada item chama mudarTela() com o nome da tela -->
+      <nav class="nav-menu">
+        <a class="nav-item active" id="btnVisaoGeral" onclick="mudarTela('visaoGeral')">Visão geral</a>
+        <a class="nav-item" id="btnEstilos" onclick="mudarTela('estilos')">Estilos</a>
+        <a class="nav-item" id="btnQuiz" onclick="mudarTela('quiz')">Fazer o Quiz</a>
+      </nav>
     </div>
+    <button class="btn-logout" onclick="fazerLogout()">Sair</button>
+  </aside>
 
-    <script>
-        let meuGraficoRosca = null;
+  <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+  <main class="main-content">
 
-        // ==========================================
-        // 1. NAVEGAÇÃO ENTRE AS TELAS
-        // ==========================================
-        function mudarTela(telaAlvo) {
-            document.querySelectorAll('.tela').forEach(tela => tela.classList.remove('ativa'));
-            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+    <!-- TELA 1: VISÃO GERAL -->
+    <section id="tela-visaoGeral" class="tela ativa">
+      <header class="header">
+        <span class="subtitle">PAINEL DA REVISTA</span>
+        <h2>Qual é o estilo dos nossos leitores?</h2>
+      </header>
 
-            if (telaAlvo === 'visaoGeral') {
-                document.getElementById('tela-visaoGeral').classList.add('ativa');
-                document.getElementById('btnVisaoGeral').classList.add('active');
-            } else if (telaAlvo === 'estilos') {
-                document.getElementById('tela-estilos').classList.add('ativa');
-                document.getElementById('btnEstilos').classList.add('active');
-            } else if (telaAlvo === 'quiz') {
-                document.getElementById('tela-quiz').classList.add('ativa');
-                document.getElementById('btnQuiz').classList.add('active');
-            }
-        }
+      <!-- 4 cards de KPI: números que o JS preenche -->
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <h3>FIZERAM O QUIZ</h3>
+          <p class="kpi-value" id="kpiTotalQuizzes">0</p>
+          <span class="kpi-desc">pessoas no total</span>
+        </div>
+        <div class="kpi-card">
+          <h3>ESTILO MAIS VOTADO</h3>
+          <p class="kpi-value" id="kpiEstiloMaisVotado">-</p>
+          <span class="kpi-desc" id="kpiEstiloDesc">-</span>
+        </div>
+        <div class="kpi-card">
+          <h3>CADASTRADOS NO SITE</h3>
+          <p class="kpi-value" id="kpiTotalUsuarios">0</p>
+          <span class="kpi-desc">usuários cadastrados</span>
+        </div>
+        <div class="kpi-card">
+          <h3>CADASTRADOS QUE FIZERAM O QUIZ</h3>
+          <p class="kpi-value" id="kpiPorcentagem">0%</p>
+          <div class="progress-bar" style="margin-top:10px;">
+            <div class="progress-fill" id="barraProgresso" style="width:0%;"></div>
+          </div>
+        </div>
+      </section>
 
-        // ==========================================
-        // 2. BUSCAR DADOS DO BANCO
-        // ==========================================
-        async function carregarDadosDoBanco() {
-            try {
-                const resposta = await fetch('/dados-dashboard');
-                if (!resposta.ok) throw new Error('Falha na resposta do servidor');
-                const dados = await resposta.json();
-                renderizarDashboard(dados);
-            } catch (erro) {
-                console.error("Erro ao carregar dados:", erro);
-            }
-        }
+      <!-- Card com o gráfico de rosca (Chart.js desenha no <canvas>) -->
+      <section class="charts-grid">
+        <div class="card" style="grid-column:span 2;">
+          <h3>Pessoas por estilo</h3>
+          <div style="position:relative; height:300px; width:100%; max-width:600px; margin:0 auto;">
+            <canvas id="graficoRosca"></canvas>
+          </div>
+        </div>
+      </section>
+    </section>
 
-        // ==========================================
-        // 3. PREENCHER A TELA COM OS DADOS
-        // ==========================================
-        function renderizarDashboard(dados) {
-            const nomeSalvo = localStorage.getItem('nomeUsuario') || 'Visitante';
-            document.getElementById("nomeUsuario").innerText = "Olá, " + nomeSalvo + "!";
+    <!-- TELA 2: RANKING DOS ESTILOS -->
+    <section id="tela-estilos" class="tela">
+      <header class="header">
+        <span class="subtitle">RESULTADOS DO QUIZ</span>
+        <h2>Ranking dos estilos</h2>
+      </header>
 
-            // --- CORREÇÃO DAS CONTAS DOS KPIs ---
-            // Ainda precisamos filtrar para o cálculo da PORCENTAGEM não contar o mesmo usuário 2x
-            const usuariosUnicos = new Set();
-            dados.ultimos.forEach(item => usuariosUnicos.add(item.nome));
-            const totalPessoasQueFizeram = usuariosUnicos.size;
+      <!-- 3 KPIs: líder, quantidade fixa e menos votado -->
+      <section class="kpi-grid" style="grid-template-columns:repeat(3,1fr);">
+        <div class="kpi-card">
+          <h3>ESTILO LÍDER</h3>
+          <p class="kpi-value" id="kpiLider">-</p>
+          <span class="kpi-desc" id="kpiLiderDesc">-</span>
+        </div>
+        <div class="kpi-card">
+          <h3>ESTILOS DISPONÍVEIS</h3>
+          <p class="kpi-value">5</p>
+          <span class="kpi-desc">opções no quiz</span>
+        </div>
+        <div class="kpi-card">
+          <h3>MENOS VOTADO</h3>
+          <p class="kpi-value" id="kpiMenosVotado">-</p>
+          <span class="kpi-desc" id="kpiMenosVotadoDesc">-</span>
+        </div>
+      </section>
 
-            // --- TELA 1: VISÃO GERAL ---
-            // Mostra o número de pessoas únicas
-            document.getElementById("kpiTotalQuizzes").innerText = totalPessoasQueFizeram;
-            document.getElementById("kpiTotalUsuarios").innerText = dados.totalUsuarios;
-            
-            const totalU = dados.totalUsuarios;
-            const pessoasQ = totalPessoasQueFizeram;
-            
-            let porcentagem = 0;
-            if (totalU > 0) {
-                porcentagem = Math.round((pessoasQ / totalU) * 100);
-                if (porcentagem > 100) porcentagem = 100; 
-            }
-            
-            document.getElementById("kpiPorcentagem").innerText = porcentagem + "%";
-            document.getElementById("barraProgresso").style.width = porcentagem + "%";
+      <!-- 2 colunas: ranking (esq) + tabela de últimos resultados (dir) -->
+      <section class="content-grid">
+        <div class="card ranking-card">
+          <h3>Do mais ao menos votado</h3>
+          <div class="ranking-list" id="listaRanking"></div>
+        </div>
 
-            if (dados.ranking.length > 0) {
-                document.getElementById("kpiEstiloMaisVotado").innerText = dados.ranking[0].estilo_escolhido;
-                document.getElementById("kpiEstiloDesc").innerText = "Mais escolhido";
-            } else {
-                document.getElementById("kpiEstiloMaisVotado").innerText = "-";
-                document.getElementById("kpiEstiloDesc").innerText = "Sem dados";
-            }
+        <div class="card results-card">
+          <h3>Últimos resultados</h3>
+          <table class="results-table">
+            <thead><tr><th>LEITORA</th><th>ESTILO</th><th>QUANDO</th></tr></thead>
+            <tbody id="corpoTabela"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
 
-            // --- TELA 2: ESTILOS (RANKING) ---
-            const ranking = dados.ranking;
-            
-            if (ranking.length > 0) {
-                document.getElementById("kpiLider").innerText = ranking[0].estilo_escolhido;
-                document.getElementById("kpiLiderDesc").innerText = "Líder atual";
-                
-                const ultimo = ranking[ranking.length - 1];
-                document.getElementById("kpiMenosVotado").innerText = ultimo.estilo_escolhido;
-                document.getElementById("kpiMenosVotadoDesc").innerText = "Menos votado";
-                
-                // Não precisa mais atualizar o número de estilos via JS, pois está fixo no HTML.
-            } else {
-                document.getElementById("kpiLider").innerText = "-";
-                document.getElementById("kpiLiderDesc").innerText = "Aguardando respostas";
-                document.getElementById("kpiMenosVotado").innerText = "-";
-                document.getElementById("kpiMenosVotadoDesc").innerText = "Aguardando respostas";
-            }
+    <!-- TELA 3: CHAMADA PARA O QUIZ -->
+    <section id="tela-quiz" class="tela">
+      <header class="header">
+        <span class="subtitle">DESCUBRA SEU ESTILO</span>
+        <h2>Quiz de Moda</h2>
+      </header>
+      <div class="card" style="text-align:center; padding:50px;">
+        <h3 style="margin-bottom:15px;">Qual estilo combina com você?</h3>
+        <p style="color:#666; margin-bottom:30px; font-size:1.1rem;">
+          Responda 10 perguntas rápidas e descubra qual é a sua essência na moda!
+        </p>
+        <a href="quiz.html" class="btn-logout"
+           style="display:inline-block; width:auto; padding:15px 40px; text-decoration:none; background:#5c1324; font-weight:bold;">
+          Iniciar o Quiz
+        </a>
+      </div>
+    </section>
 
-            const containerRanking = document.getElementById("listaRanking");
-            containerRanking.innerHTML = "";
-            
-            if (ranking.length === 0) {
-                containerRanking.innerHTML = "<p style='color:#888; font-size:0.9rem; text-align:center; padding: 20px;'>Nenhum quiz respondido ainda.</p>";
-            } else {
-                let totalVotos = 0;
-                ranking.forEach(r => totalVotos += r.votos);
+  </main>
+</div>
 
-                ranking.forEach((item, index) => {
-                    const pct = totalVotos > 0 ? Math.round((item.votos / totalVotos) * 100) : 0;
-                    
-                    containerRanking.innerHTML += `
-                        <div class="ranking-item">
-                            <div class="rank-number">${index + 1}º</div>
-                            <div class="rank-info">
-                                <div class="rank-header">
-                                    <span class="rank-name">${item.estilo_escolhido}</span>
-                                    <span class="rank-votes">${item.votos}</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: ${pct}%;"></div>
-                                </div>
-                                <span class="rank-percent">${pct}%</span>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
+<script>
+// Guarda a instância do gráfico pra poder destruir antes de redesenhar
+let meuGraficoRosca = null;
 
-            // --- TABELA DE ÚLTIMOS RESULTADOS ---
-            // CORREÇÃO: Voltamos a usar "dados.ultimos" para mostrar TODOS os resultados
-            const corpoTabela = document.getElementById("corpoTabela");
-            corpoTabela.innerHTML = "";
+// ============================================================
+// mudarTela(t): alterna entre "visaoGeral", "estilos" e "quiz"
+// ============================================================
+function mudarTela(t) {
+  // Esconde todas as telas e tira o "active" dos botões
+  document.querySelectorAll('.tela').forEach(x => x.classList.remove('ativa'));
+  document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
 
-            if (dados.ultimos.length === 0) {
-                corpoTabela.innerHTML = "<tr><td colspan='3' style='text-align:center; color:#888; padding: 20px;'>Nenhum resultado recente.</td></tr>";
-            } else {
-                dados.ultimos.forEach(item => {
-                    const dataObj = new Date(item.data_realizacao);
-                    const dataFormatada = dataObj.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) + ' ' + dataObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-                    const classeBadge = item.estilo_escolhido.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  // Monta o id do botão: visaoGeral → btnVisaoGeral
+  const idBtn = 'btn' + t[0].toUpperCase() + t.slice(1);
 
-                    corpoTabela.innerHTML += `
-                        <tr>
-                            <td>${item.nome}</td>
-                            <td><span class="badge badge-${classeBadge}">${item.estilo_escolhido}</span></td>
-                            <td>${dataFormatada}</td>
-                        </tr>
-                    `;
-                });
-            }
+  // Mostra a tela pedida e marca o botão correspondente
+  document.getElementById('tela-' + t).classList.add('ativa');
+  document.getElementById(idBtn).classList.add('active');
+}
 
-            desenharGraficos(dados); 
-        }
+// ============================================================
+// carregarDadosDoBanco(): busca /dados-dashboard e chama o render
+// ============================================================
+async function carregarDadosDoBanco() {
+  try {
+    const r = await fetch('/dados-dashboard');
+    if (!r.ok) throw new Error('Falha na resposta');
+    renderizarDashboard(await r.json());
+  } catch (e) {
+    console.error("Erro ao carregar dados:", e);
+  }
+}
 
-        // ==========================================
-        // 4. DESENHAR O GRÁFICO DE ROSCA
-        // ==========================================
-        function desenharGraficos(dados) {
-            const ctxRosca = document.getElementById('graficoRosca').getContext('2d');
-            
-            if (meuGraficoRosca) meuGraficoRosca.destroy();
+// ============================================================
+// renderizarDashboard(d): preenche KPIs, ranking, tabela e gráfico
+// d = { totalUsuarios, ranking[], ultimos[] }
+// ============================================================
+function renderizarDashboard(d) {
+  // Saudação
+  nomeUsuario.innerText = `Olá, ${localStorage.getItem('nomeUsuario') || 'Visitante'}!`;
 
-            const labelsEstilos = dados.ranking.map(item => item.estilo_escolhido);
-            const valoresEstilos = dados.ranking.map(item => item.votos);
+  // ---- KPIs da Visão Geral ----
+  // Set() remove nomes duplicados → conta usuários ÚNICOS que fizeram o quiz
+  const unicos = new Set(d.ultimos.map(i => i.nome)).size;
 
-            meuGraficoRosca = new Chart(ctxRosca, {
-                type: 'doughnut',
-                data: {
-                    labels: labelsEstilos.length > 0 ? labelsEstilos : ['Sem dados'],
-                    datasets: [{
-                        data: valoresEstilos.length > 0 ? valoresEstilos : [1],
-                        backgroundColor: valoresEstilos.length > 0 ? ['#5c1324', '#a63d55', '#d97a7a', '#8c7a7a', '#e0b0b0'] : ['#f0e6e6'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom', labels: { font: { family: 'Montserrat', size: 12 } } }
-                    }
-                }
-            });
-        }
+  // Porcentagem (0 a 100) de cadastrados que fizeram o quiz
+  const pct = d.totalUsuarios
+    ? Math.min(100, Math.round(unicos / d.totalUsuarios * 100))
+    : 0;
 
-        // ==========================================
-        // 5. AÇÕES
-        // ==========================================
-        function fazerLogout() {
-            if (confirm("Deseja realmente sair do painel?")) {
-                localStorage.removeItem('nomeUsuario');
-                localStorage.removeItem('idUsuario');
-                window.location.href = "login.html";
-            }
-        }
+  kpiTotalQuizzes.innerText     = unicos;
+  kpiTotalUsuarios.innerText    = d.totalUsuarios;
+  kpiPorcentagem.innerText      = pct + "%";
+  barraProgresso.style.width    = pct + "%";
+  kpiEstiloMaisVotado.innerText = d.ranking[0]?.estilo_escolhido || "-";
+  kpiEstiloDesc.innerText       = d.ranking[0] ? "Mais escolhido" : "Sem dados";
 
-        window.onload = function() {
-            carregarDadosDoBanco(); 
-            setInterval(carregarDadosDoBanco, 5000); 
-        };
-    </script>
+  // ---- Ranking (lista com barrinhas) ----
+  const totalVotos = d.ranking.reduce((s, r) => s + r.votos, 0);
+
+  listaRanking.innerHTML = d.ranking.length === 0
+    ? "<p style='color:#888;font-size:.9rem;text-align:center;padding:20px'>Nenhum quiz ainda.</p>"
+    : d.ranking.map((r, i) => {
+        const p = totalVotos ? Math.round(r.votos / totalVotos * 100) : 0;
+        return `<div class="ranking-item">
+          <div class="rank-number">${i + 1}º</div>
+          <div class="rank-info">
+            <div class="rank-header">
+              <span class="rank-name">${r.estilo_escolhido}</span>
+              <span class="rank-votes">${r.votos}</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:${p}%"></div></div>
+            <span class="rank-percent">${p}%</span>
+          </div>
+        </div>`;
+      }).join("");
+
+  // KPIs do ranking: primeiro e último da lista
+  kpiLider.innerText              = d.ranking[0]?.estilo_escolhido        || "-";
+  kpiLiderDesc.innerText          = d.ranking[0] ? "Líder atual"         : "Aguardando respostas";
+  kpiMenosVotado.innerText        = d.ranking.at(-1)?.estilo_escolhido    || "-";
+  kpiMenosVotadoDesc.innerText    = d.ranking.at(-1) ? "Menos votado"    : "Aguardando respostas";
+
+  // ---- Tabela de últimos resultados ----
+  corpoTabela.innerHTML = d.ultimos.length === 0
+    ? "<tr><td colspan='3' style='text-align:center;color:#888;padding:20px'>Nenhum resultado recente.</td></tr>"
+    : d.ultimos.map(i => {
+        // Formata data: DD/MM HH:MM
+        const dt = new Date(i.data_realizacao);
+        const data = dt.toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit' }) +
+                     ' ' + dt.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+
+        // Classe do badge: remove acentos (Clássico → classico)
+        const badge = i.estilo_escolhido.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+        return `<tr>
+          <td>${i.nome}</td>
+          <td><span class="badge badge-${badge}">${i.estilo_escolhido}</span></td>
+          <td>${data}</td>
+        </tr>`;
+      }).join("");
+
+  // Atualiza o gráfico
+  desenharGraficos(d);
+}
+
+// ============================================================
+// desenharGraficos(d): (re)desenha o gráfico de rosca
+// ============================================================
+function desenharGraficos(d) {
+  // Destrói o gráfico anterior (senão o Chart.js sobrepõe)
+  if (meuGraficoRosca) meuGraficoRosca.destroy();
+
+  const labels = d.ranking.map(r => r.estilo_escolhido);
+  const valores = d.ranking.map(r => r.votos);
+
+  meuGraficoRosca = new Chart(graficoRosca, {
+    type: 'doughnut',
+    data: {
+      labels: labels.length ? labels : ['Sem dados'],
+      datasets: [{
+        data: valores.length ? valores : [1],
+        backgroundColor: valores.length
+          ? ['#5c1324','#a63d55','#d97a7a','#8c7a7a','#e0b0b0']
+          : ['#f0e6e6'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { position:'bottom', labels:{ font:{ family:'Montserrat', size:12 } } } }
+    }
+  });
+}
+
+// ============================================================
+// fazerLogout(): limpa dados salvos e volta pro login
+// ============================================================
+function fazerLogout() {
+  if (confirm("Deseja realmente sair do painel?")) {
+    localStorage.removeItem('nomeUsuario');
+    localStorage.removeItem('idUsuario');
+    location.href = "login.html";
+  }
+}
+
+// ============================================================
+// INICIALIZAÇÃO: carrega ao abrir + atualiza a cada 5s
+// ============================================================
+window.onload = () => {
+  carregarDadosDoBanco();
+  setInterval(carregarDadosDoBanco, 5000);
+};
+</script>
 </body>
 </html>

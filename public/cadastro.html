@@ -33,6 +33,7 @@
   <!--header fim-->
 
   <div class="login">
+    <!-- Div onde as mensagens de erro/sucesso aparecem -->
     <div class="alerta_erro">
       <div class="card_erro" id="cardErro">
         <span id="mensagem_erro"></span>
@@ -53,10 +54,12 @@
           </div>
           <div class="campo">
             <span>Senha:</span>
+            <!-- minlength="8": atributo HTML que exige no mínimo 8 caracteres (camada extra de UX) -->
             <input id="senha_input" type="password" placeholder="******" minlength="8" />
           </div>
           <div class="campo">
             <span>Confirmação da Senha:</span>
+            <!-- minlength="8": mesma regra aplicada ao campo de confirmação -->
             <input id="confirmacao_senha_input" type="password" placeholder="******" minlength="8" />
           </div>
           <button class="botao" onclick="cadastrar()">Cadastrar</button>
@@ -81,86 +84,118 @@
 </html>
 
 <script>
+  // ============================================================
+  // FUNÇÃO cadastrar()
+  // Executada quando o usuário clica no botão "Cadastrar".
+  // Responsável por validar os campos e enviar os dados ao backend.
+  // ============================================================
   function cadastrar() {
+
+    // ---------- 1. CAPTURA DOS VALORES DOS INPUTS ----------
+    // Cada variável recebe o que o usuário digitou no respectivo campo.
     var nomeVar = nome_input.value;
     var emailVar = email_input.value;
     var senhaVar = senha_input.value;
     var confirmacaoSenhaVar = confirmacao_senha_input.value;
 
-    // ===== VETOR com os campos do formulário =====
+    // ---------- 2. VETOR (array) COM OS CAMPOS ----------
+    // Criamos um array de objetos para facilitar a validação em loop.
+    // Cada posição guarda: o valor digitado + o nome amigável do campo.
+    // Vantagem: se um campo estiver vazio, conseguimos dizer QUAL faltou.
     var campos = [
-      { valor: nomeVar,               nome: "Nome" },
-      { valor: emailVar,              nome: "E-mail" },
-      { valor: senhaVar,              nome: "Senha" },
-      { valor: confirmacaoSenhaVar,   nome: "Confirmação de Senha" }
+      { valor: nomeVar,             nome: "Nome" },
+      { valor: emailVar,            nome: "E-mail" },
+      { valor: senhaVar,            nome: "Senha" },
+      { valor: confirmacaoSenhaVar, nome: "Confirmação de Senha" }
     ];
 
-    // ===== FOR percorrendo o vetor para validar campos vazios =====
+    // ---------- 3. FOR PERCORRENDO O VETOR ----------
+    // Percorre todos os campos do array (índice 0 até length-1).
+    // Se algum estiver vazio (""), exibe mensagem de erro e para a função.
     for (var i = 0; i < campos.length; i++) {
       if (campos[i].valor == "") {
-        cardErro.style.display = "block";
-        mensagem_erro.innerHTML = "Por favor, preencha o campo: " + campos[i].nome;
-        return false;
+        cardErro.style.display = "block";                                 // mostra o card de erro
+        mensagem_erro.innerHTML = "Por favor, preencha o campo: " + campos[i].nome; // mensagem dinâmica
+        return false;                                                     // interrompe o cadastro
       }
     }
 
+    // ---------- 4. AGENDAMENTO PARA ESCONDER A MENSAGEM ----------
+    // Se tudo passou, agenda para esconder o card de erro após 5 segundos.
     setInterval(sumirMensagem, 5000);
 
-    // ===== Validação de tamanho mínimo da senha (8 caracteres) =====
+    // ---------- 5. VALIDAÇÃO DE TAMANHO DA SENHA ----------
+    // .length retorna quantos caracteres a string tem.
+    // Se for menor que 8, bloqueia o cadastro.
     if (senhaVar.length < 8) {
       cardErro.style.display = "block";
       mensagem_erro.innerHTML = "A senha deve ter no mínimo 8 caracteres!";
       return false;
     }
 
-    // ===== Validação de confirmação de senha =====
+    // ---------- 6. VALIDAÇÃO DE CONFIRMAÇÃO DE SENHA ----------
+    // Compara os dois campos. Se forem diferentes, exibe erro.
     if (senhaVar !== confirmacaoSenhaVar) {
       cardErro.style.display = "block";
       mensagem_erro.innerHTML = "As senhas não coincidem!";
       return false;
     }
 
+    // Log no console para facilitar debug durante o desenvolvimento.
     console.log("Tentando cadastrar:", nomeVar, emailVar);
 
-    // CORREÇÃO AQUI: Rota no singular (/usuario/cadastrar)
+    // ---------- 7. ENVIO PARA O BACKEND (FETCH) ----------
+    // Faz uma requisição HTTP POST para a API enviando os dados em JSON.
     fetch("http://localhost:3333/usuario/cadastrar", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json", // avisa o servidor que o corpo é JSON
       },
       body: JSON.stringify({
+        // O backend espera os nomes "nomeServer", "emailServer" e "senhaServer"
         nomeServer: nomeVar,
         emailServer: emailVar,
         senhaServer: senhaVar
       }),
     })
+      // ---------- 8. TRATAMENTO DA RESPOSTA ----------
       .then(function (resposta) {
         if (resposta.ok) {
+          // Status HTTP 2xx → cadastro deu certo
           cardErro.style.display = "block";
           mensagem_erro.innerHTML = "Cadastro realizado com sucesso! Redirecionando para o Login...";
 
+          // Espera 2 segundos e redireciona para a tela de login
           setTimeout(() => {
             window.location = "login.html";
           }, "2000");
 
           // Se tiver a função limparFormulario no sessao.js, descomente abaixo
-          // limparFormulario(); 
+          // limparFormulario();
         } else {
+          // Status HTTP diferente de 2xx → erro no servidor (ex: email duplicado)
           resposta.text().then(texto => {
             cardErro.style.display = "block";
             mensagem_erro.innerHTML = "Erro: " + texto;
           });
         }
       })
+      // ---------- 9. TRATAMENTO DE ERRO DE CONEXÃO ----------
       .catch(function (erro) {
+        // Cai aqui se o servidor estiver desligado, rota errada, sem internet, etc.
         console.log(`#ERRO: ${erro}`);
         cardErro.style.display = "block";
         mensagem_erro.innerHTML = "Erro ao conectar com o servidor. Ele está rodando?";
       });
 
+    // return false impede o recarregamento padrão (caso vire um form no futuro)
     return false;
   }
 
+  // ============================================================
+  // FUNÇÃO sumirMensagem()
+  // Esconde o card de erro. Chamada automaticamente após 5s.
+  // ============================================================
   function sumirMensagem() {
     cardErro.style.display = "none";
   }
